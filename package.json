@@ -7,9 +7,21 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
+  "engines": {
+    "node": "8"
+  },
   "dependencies": {
+    "bootstrap": "^4.5.3",
     "core-js": "^3.6.5",
-    "vue": "^3.0.0"
+    "firebase": "^8.1.1",
+    "jquery": "^3.5.1",
+    "popper.js": "^1.16.1",
+    "primeflex": "^2.0.0",
+    "primeicons": "^4.1.0",
+    "primevue": "^3.1.1",
+    "vue": "^3.0.0",
+    "vue-router": "^4.0.0-rc.6",
+    "vuex": "^4.0.0-rc.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -18,7 +30,10 @@
     "@vue/compiler-sfc": "^3.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^7.0.0-0"
+    "eslint-plugin-vue": "^7.0.0-0",
+    "node-sass": "^5.0.0",
+    "sass-loader": "^10.1.0",
+    "sweetalert2": "^10.11.1"
   },
   "eslintConfig": {
     "root": true,

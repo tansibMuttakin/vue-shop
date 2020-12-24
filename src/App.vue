@@ -1,15 +1,17 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <router-view></router-view>
+  <CartModal></CartModal>
+  <LoginModal></LoginModal>
 </template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
+import CartModal from './components/CartModal';
+import LoginModal from './components/Login';
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  components:{
+    CartModal,
+    LoginModal,
   }
 }
 </script>
