@@ -1,7 +1,7 @@
 <template>
     <Navbar @toggle-sidebar="sidebarVisible()"></Navbar>
+    <Sidebar :showSidebar="showSidebar"></Sidebar>
     <div class="d-flex">
-        <Sidebar :showSidebar="showSidebar"></Sidebar>
         <div :class="showSidebar?'cml-228':'cml-0'" class="flex-grow-1 flex-shrink-1">
             <h1>About Page</h1>
             <div class="container">

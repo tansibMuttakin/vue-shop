@@ -2,13 +2,14 @@ import { createWebHistory, createRouter } from "vue-router";
 import firebase from './firebase';
 import Home from './pages/Home';
 import About from './pages/About';
-import CheckOut from './components/CheckOut';
+import CheckOut from './pages/CheckOut';
 import Admin from './pages/Admin';
 import Orders from './components/adminComponents/Orders';
 import Overview from './components/adminComponents/Overview';
 import Products from './components/adminComponents/Products';
 import Profile from './components/adminComponents/Profile';
 import Dashboard from './components/adminComponents/Dashboard';
+import NotFound from './components/NotFound';
 import AllProducts from './pages/AllProducts';
 import Categories from './pages/Categories';
 
@@ -47,7 +48,11 @@ const routes = [
   {
     path:"/allProducts",
     component:AllProducts,
-  }
+  },
+  {
+    path: "/:catchAll(.*)",
+    component: NotFound,
+  },
 ];
 
 const router = createRouter({

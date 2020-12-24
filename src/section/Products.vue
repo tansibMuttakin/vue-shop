@@ -46,7 +46,10 @@
     <div class="container mt-3">
         <Carousel :value="products" :numVisible="3" :numScroll="3" :responsiveOptions="responsiveOptions" :circular="true">
             <template #item="product">
-                <div class="card product-item h-100 mx-2">
+                <div class="card product-item h-100 mx-2 position-relative">
+                    <div class="badge badge-danger text-wrap position-absolute" style="width: 3rem;right:1px;top:1px;">
+                        -15%
+                    </div>
                     <img src="/img/products/product1.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
                         <div class="d-flex justify-content-between">

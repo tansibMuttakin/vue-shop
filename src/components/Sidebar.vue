@@ -3,11 +3,7 @@
         <!-- <p :style="!showSidebar?'display:none':''">Sidebar components</p> -->
         <div :style="!showSidebar?'display:none':''">
             <ul class="p-0 my-3">
-                <li v-for="category in categories" :key="category.id"
-                class="list-item list-unstyled text-left p-3"
-                >
-                    <router-link class="link text-decoration-none text-white" :to="{name:'categories', params:{slug:category.slug}}">{{category.name}}</router-link>
-                </li>
+                <router-link  v-for="category in categories" :key="category.id" class="link text-decoration-none text-white" :to="{name:'categories', params:{slug:category.slug}}">{{category.name}}</router-link>
             </ul>
         </div>
     </div>
@@ -54,12 +50,14 @@ export default {
         color: white;
         transition: ease .2s;
     }
-    .list-item:hover{
+    .link{
+        display: block;
+        padding: 1rem;
+        color: #cbc5c5 !important;
+    }
+    .link:hover{
         transition: 0.4s ease;
         cursor: pointer;
         background: #222121;
-    }
-    .link{
-        color: rgba(255, 255, 255, 0.5);
     }
 </style>
