@@ -1,6 +1,5 @@
 <template>
     <div :class="!showSidebar?'wrapper-close':'wrapper-open'" class="border bg-dark border-dark border-bottom-0 border-top-0 border-left-0">
-        <!-- <p :style="!showSidebar?'display:none':''">Sidebar components</p> -->
         <div :style="!showSidebar?'display:none':''">
             <ul class="p-0 my-3">
                 <router-link  v-for="category in categories" :key="category.id" class="link text-decoration-none text-white" :to="{name:'categories', params:{slug:category.slug}}">{{category.name}}</router-link>

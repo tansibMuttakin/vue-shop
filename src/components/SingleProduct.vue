@@ -64,7 +64,7 @@
                             <div class="my-2">
                                 <p class="text-left font-weight-bold">Category: <span class="font-weight-normal font-italic">{{item.itemCategory.name}}</span></p>
                             </div>
-                            <div class="my-2">
+                            <div v-if="item.itemTags.length >= 1 && item.itemTags[0]!=''" class="my-2">
                                 <p class="text-left font-weight-bold">Tags:</p>
                                 <ul class="d-flex list-group list-group-horizontal-sm">
                                     <li v-for="(tag,index) in item.itemTags" :key="index" class="list-group-item">{{tag}}</li>
@@ -123,7 +123,7 @@ export default {
         },
     },
     mounted(){
-
+        
     }
 }
 </script>

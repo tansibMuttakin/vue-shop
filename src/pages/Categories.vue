@@ -5,9 +5,10 @@
         <div :class="showSidebar?'cml-228':'cml-0'" class="flex-grow-1 flex-shrink-1">
             <div class="my-5">
                 <h4 class="slug"><span>{{categoryName}}</span></h4>
+                {{data}}
             </div>
             <div class="container-fluid">
-                <ul class="d-flex flex-wrap p-0">
+                <ul class="d-flex flex-wrap p-0 m-auto" style="width:82%;">
                     <li class="list-unstyled mx-3 my-2" v-for="(product,index) in products" :key="index">
                         <div class="card" style="width: 17rem; height:20rem">
                             <img class="card-img-top" src="/img/products/product1.jpg" alt="Card image cap">
@@ -50,12 +51,17 @@ import AddToCart from '../components/AddToCart';
 import SingleProduct from '../components/SingleProduct';
 import Sidebar from '../components/Sidebar';
 export default {
+    inheritAttrs: false,
     components:{
-        Navbar,AddToCart,SingleProduct,Sidebar
+        Navbar,
+        AddToCart,
+        SingleProduct,
+        Sidebar,
     },
+    props:['slug'],
     data(){
         return{
-            slug:this.$route.params.slug,
+            // slug:this.$route.params.slug,
             products:[],
             categoryName:'',
             showSidebar:false,
@@ -68,19 +74,27 @@ export default {
             } else {
             return this.showSidebar = true;
             }
-      }
+        },
+        async fetchData(){
+            const snapShot = await db.collection("Categories").where("slug","==",this.slug).get();
+            const category = snapShot.docs[0].data();
+            this.categoryName = category.name;
+            const Products = await db.collection("Products").where("category.name","==",category.name).get();
+            Products.forEach((doc)=>{
+                const id = doc.id;
+                let dataInfo = {id, ...doc.data()};
+                this.products.push(dataInfo);
+            });
+        }
     },
-    async mounted(){
-
-        const snapShot = await db.collection("Categories").where("slug","==",this.slug).get();
-        const category = snapShot.docs[0].data();
-        this.categoryName = category.name;
-        const Products = await db.collection("Products").where("category.name","==",category.name).get();
-        Products.forEach((doc)=>{
-            const id = doc.id;
-            let dataInfo = {id, ...doc.data()};
-            this.products.push(dataInfo);
-        });
+    watch:{
+        slug(){
+            this.products=[];
+            this.fetchData();
+        }
+    },
+    mounted(){
+        this.fetchData();
     },
 }
 </script>

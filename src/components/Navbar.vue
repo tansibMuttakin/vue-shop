@@ -21,9 +21,12 @@
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                 <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
             </form>
-            <button type="button" @click="$emit('open-login-modal')" class="btn btn-outline-success my-2 ml-2 my-sm-0" data-toggle="modal" data-target="#login-modal">
+            <button type="button" class="btn btn-outline-success my-2 ml-2 my-sm-0" data-toggle="modal" data-target="#login-modal">
                 Login
             </button>
+            <!-- <button type="button" @click="logout()" class="btn btn-outline-success my-2 ml-2 my-sm-0">
+                Logout
+            </button> -->
             <button class="btn btn-outline-success my-2 ml-2 my-sm-0" type="submit" data-toggle="modal" data-target="#cart-modal">Cart</button>
         </div>
     </nav>

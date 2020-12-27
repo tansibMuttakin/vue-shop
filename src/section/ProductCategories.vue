@@ -3,8 +3,11 @@
         <p class="m-0" style="font-size:x-large">Our Product Categories</p>
     </div>
     <div class="container d-flex flex-wrap flex-gap">
-        <div v-for="(category,index) in categories" :key="index" class="category-wrapper px-5 py-2 border d-flex justify-content-center align-items-center">
-            <router-link class="m-0 text-decoration-none text-dark" :to="{name:'categories', params:{slug:category.slug}}">{{category.name}}</router-link>
+        <div v-for="(category,index) in categories" :key="index" class="category-wrapper border d-flex justify-content-center align-items-center">
+            <router-link class="m-0 text-decoration-none text-dark" :to="{name:'categories', params:{slug:category.slug}}"
+            style="width: 100%;padding: 1.3rem;">
+                {{category.name}}
+            </router-link>
         </div>
     </div>
 </template>

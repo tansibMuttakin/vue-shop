@@ -4,9 +4,6 @@
         <div class="d-flex">
             <Sidebar :showSidebar="showSidebar"></Sidebar>
             <div :class="showSidebar?'cml-228':'cml-0'" class="container mt-5 flex-grow-1 flex-shrink-1">
-                <!-- <div class="py-5 text-center">
-                    <h2>Checkout form</h2>
-                </div> -->
 
                 <div class="row">
                     <div class="col-md-4 order-md-2 mb-4">
@@ -22,7 +19,7 @@
                             </div>
                             <span class="text-muted">$ {{(item.itemPrice)*(item.itemQuantity)}}</span>
                             </li>
-                            <li class="list-group-item d-flex justify-content-between">
+                            <li class="list-group-item d-flex justify-content-between bg-secondary text-white">
                             <span>Total (USD)</span>
                             <strong>${{totalPrice}}</strong>
                             </li>
@@ -37,137 +34,135 @@
                             </div>
                         </form>
                     </div>
-                    <div class="col-md-8 order-md-1">
+                    <div class="col-md-8 order-md-1 text-left">
                         <h4 class="mb-3">Billing address</h4>
-                        <form class="needs-validation" novalidate>
+                        <form class="needs-validation">
                             <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="firstName">First name</label>
-                                <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
-                                <div class="invalid-feedback">
-                                Valid first name is required.
+                                <div class="col-md-6 mb-3">
+                                    <label for="firstName">First name</label>
+                                    <input type="text" class="form-control" id="firstName" v-model="billingInfo.firstName" placeholder=""  required>
+                                    <div class="invalid-feedback">
+                                        Valid first name is required.
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="lastName">Last name</label>
+                                    <input type="text" class="form-control" id="lastName" placeholder="" v-model="billingInfo.lastName" required>
+                                    <div class="invalid-feedback">
+                                        Valid last name is required.
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="lastName">Last name</label>
-                                <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+                            <div class="mb-3">
+                                <label for="email">Email <span class="text-muted">(Optional)</span></label>
+                                <input type="email" class="form-control" v-model="billingInfo.email" id="email" placeholder="you@example.com">
                                 <div class="invalid-feedback">
-                                Valid last name is required.
+                                    Please enter a valid email address for shipping updates.
                                 </div>
                             </div>
-                            </div>
-
 
                             <div class="mb-3">
-                            <label for="email">Email <span class="text-muted">(Optional)</span></label>
-                            <input type="email" class="form-control" id="email" placeholder="you@example.com">
-                            <div class="invalid-feedback">
-                                Please enter a valid email address for shipping updates.
-                            </div>
+                                <label for="address">Address</label>
+                                <input type="text" class="form-control" v-model="billingInfo.address" id="address" placeholder="1234 Main St" required>
+                                <div class="invalid-feedback">
+                                    Please enter your shipping address.
+                                </div>
                             </div>
 
                             <div class="mb-3">
-                            <label for="address">Address</label>
-                            <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
-                            <div class="invalid-feedback">
-                                Please enter your shipping address.
-                            </div>
-                            </div>
-
-                            <div class="mb-3">
-                            <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
-                            <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">
+                                <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
+                                <input type="text" class="form-control" id="address2" v-model="billingInfo.optionalAddress" placeholder="Apartment or suite">
                             </div>
 
                             <div class="row">
-                            <div class="col-md-5 mb-3">
-                                <label for="country">Country</label>
-                                <select class="custom-select d-block w-100" id="country" required>
-                                <option value="">Choose...</option>
-                                <option>United States</option>
-                                </select>
-                                <div class="invalid-feedback">
-                                Please select a valid country.
+                                <div class="col-md-5 mb-3">
+                                    <label for="country">Country</label>
+                                    <select class="custom-select d-block w-100" id="country" v-model="billingInfo.country" required>
+                                        <option value="">Choose...</option>
+                                        <option>United States</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Please select a valid country.
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="state">State</label>
+                                    <select class="custom-select d-block w-100" id="state" v-model="billingInfo.state" required>
+                                        <option value="">Choose...</option>
+                                        <option>California</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Please provide a valid state.
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label for="zip">Zip</label>
+                                    <input type="text" class="form-control" id="zip" v-model="billingInfo.zip" placeholder="" required>
+                                    <div class="invalid-feedback">
+                                        Zip code required.
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="state">State</label>
-                                <select class="custom-select d-block w-100" id="state" required>
-                                <option value="">Choose...</option>
-                                <option>California</option>
-                                </select>
-                                <div class="invalid-feedback">
-                                Please provide a valid state.
-                                </div>
+                            <hr class="mb-4">
+                            <div class="d-flex custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="same-address">
+                                <label class="custom-control-label" for="same-address">Shipping address is the same as my billing address</label>
                             </div>
-                            <div class="col-md-3 mb-3">
-                                <label for="zip">Zip</label>
-                                <input type="text" class="form-control" id="zip" placeholder="" required>
-                                <div class="invalid-feedback">
-                                Zip code required.
-                                </div>
+                            <div class="d-flex custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="save-info">
+                                <label class="custom-control-label" for="save-info">Save this information for next time</label>
                             </div>
-                            </div>
-                            <!-- <hr class="mb-4"> -->
-                            <!-- <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="same-address">
-                            <label class="custom-control-label" for="same-address">Shipping address is the same as my billing address</label>
-                            </div>
-                            <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="save-info">
-                            <label class="custom-control-label" for="save-info">Save this information for next time</label>
-                            </div>
-                            <hr class="mb-4"> -->
+                            <hr class="mb-4">
 
-                            <!-- <h4 class="mb-3">Payment</h4>
+                            <h4 class="d-flex mb-3">Payment</h4>
 
                             <div class="d-block my-3">
-                            <div class="custom-control custom-radio">
-                                <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required>
-                                <label class="custom-control-label" for="credit">Credit card</label>
-                            </div>
-                            <div class="custom-control custom-radio">
-                                <input id="debit" name="paymentMethod" type="radio" class="custom-control-input" required>
-                                <label class="custom-control-label" for="debit">Debit card</label>
-                            </div>
-                            <div class="custom-control custom-radio">
-                                <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input" required>
-                                <label class="custom-control-label" for="paypal">Paypal</label>
-                            </div>
+                                <div class="d-flex custom-control custom-radio">
+                                    <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required>
+                                    <label class="custom-control-label" for="credit">Credit card</label>
+                                </div>
+                                <div class="d-flex custom-control custom-radio">
+                                    <input id="debit" name="paymentMethod" type="radio" class="custom-control-input" required>
+                                    <label class="custom-control-label" for="debit">Debit card</label>
+                                </div>
+                                <div class="d-flex custom-control custom-radio">
+                                    <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input" required>
+                                    <label class="custom-control-label" for="paypal">Paypal</label>
+                                </div>
                             </div>
                             <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="cc-name">Name on card</label>
-                                <input type="text" class="form-control" id="cc-name" placeholder="" required>
-                                <small class="text-muted">Full name as displayed on card</small>
-                                <div class="invalid-feedback">
-                                Name on card is required
+                                <div class="col-md-6 mb-3">
+                                    <label for="cc-name">Name on card</label>
+                                    <input type="text" class="form-control" id="cc-name" placeholder="" required>
+                                    <small class="text-muted">Full name as displayed on card</small>
+                                    <div class="invalid-feedback">
+                                    Name on card is required
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="cc-number">Credit card number</label>
-                                <input type="text" class="form-control" id="cc-number" placeholder="" required>
-                                <div class="invalid-feedback">
-                                Credit card number is required
+                                <div class="col-md-6 mb-3">
+                                    <label for="cc-number">Credit card number</label>
+                                    <input type="text" class="form-control" id="cc-number" placeholder="" required>
+                                    <div class="invalid-feedback">
+                                        Credit card number is required
+                                    </div>
                                 </div>
-                            </div>
                             </div>
                             <div class="row">
-                            <div class="col-md-3 mb-3">
-                                <label for="cc-expiration">Expiration</label>
-                                <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
-                                <div class="invalid-feedback">
-                                Expiration date required
+                                <div class="col-md-3 mb-3">
+                                    <label for="cc-expiration">Expiration</label>
+                                    <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
+                                    <div class="invalid-feedback">
+                                    Expiration date required
+                                    </div>
                                 </div>
-                            </div>
                             <div class="col-md-3 mb-3">
                                 <label for="cc-expiration">CVV</label>
                                 <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
                                 <div class="invalid-feedback">
-                                Security code required
+                                    Security code required
                                 </div>
                             </div>
-                            </div> -->
+                            </div>
                             <hr class="mb-4">
                             <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
                         </form>
@@ -184,21 +179,38 @@
                 </footer>
             </div>
         </div>
+        <Login>
+            <template v-slot:header>
+                Please Login to complete the order
+            </template>
+        </Login>
     </div>
 </template>
 
 <script>
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
+import Login from '../components/Login';
+import firebase from '../firebase';
+import $ from 'jquery';
+import Toast from '../sweetAlart';
 export default {
-    components:{Navbar,Sidebar},
+    components:{Navbar,Sidebar,Login},
     data(){
         return{
             showSidebar:false,
+            message:'Login/Rgesiter to complete the order',
+            billingInfo:{
+                firstName:'',
+                lastName:'',
+                email:'',
+                address:'',
+                optionalAddress:'',
+                country:'',
+                state:'',
+                zip:'',
+            }
         }
-    },
-    mounted(){
-        // console.log(this.$store.state.cart);
     },
     methods:{
         removeItem(item){
@@ -210,6 +222,20 @@ export default {
             } else {
                 return this.showSidebar = true;
             }
+        },
+        checkout(){
+            firebase.auth().onAuthStateChanged((user)=>{
+                if (user) {
+                    this.$store.commit("emptyCart");
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Order placed successfully'
+                    })
+
+                } else {
+                    $("#login-modal").modal('show');
+                }
+            })
         }
     },
     computed:{
@@ -217,8 +243,7 @@ export default {
             let totalPrice = 0;
             this.$store.state.cart.map(el=>{
                 totalPrice += el.itemPrice*el.itemQuantity;
-            })
-            console.log('total price:'+totalPrice);
+            });
             return totalPrice;
         }
     }

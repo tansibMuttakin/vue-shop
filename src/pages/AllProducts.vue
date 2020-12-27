@@ -3,7 +3,7 @@
     <div class="d-flex">
         <Sidebar :showSidebar="showSidebar"></Sidebar>
         <div class="container-fluid flex-grow-1 flex-shrink-1" :class="showSidebar?'cml-228':'cml-0'">
-            <ul class="d-flex flex-wrap p-0">
+            <ul class="d-flex flex-wrap p-0 m-auto" style="width:82%;">
                 <li class="list-unstyled mx-3 my-2" v-for="(product,index) in products" :key="index">
                     <div class="card" style="width: 17rem; height:20rem">
                         <img class="card-img-top" src="/img/products/product1.jpg" alt="Card image cap">

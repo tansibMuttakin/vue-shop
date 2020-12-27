@@ -18,7 +18,7 @@
                 <div class="modal-body">
                     <div class="tab-content" id="pills-tabContent">
                         <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="pills-login-tab">
-                            <h5 class="text-center">Login Please</h5>
+                            <h5 class="text-center mb-3"><slot name="header">Login Please</slot></h5>
                             <div class="form-group">
                                 <label for="email" class="d-flex">Email address</label>
                                 <input type="email" v-model="email" class="form-control" id="login-email" aria-describedby="emailHelp" placeholder="Enter email">
