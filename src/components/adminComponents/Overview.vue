@@ -11,7 +11,7 @@
                 </div>
             </div>
         </div>
-                <hr>
+        <hr>
         <div class="d-flex justify-content-between">
             <h3>Category list</h3>
             <button class="btn btn-primary" @click="showAddModal()">Add Category</button>
