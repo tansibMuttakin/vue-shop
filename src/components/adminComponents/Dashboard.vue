@@ -5,12 +5,13 @@
         <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatem repellendus repudiandae corporis fugit perferendis fuga ab ut minus quibusdam, quaerat nesciunt, amet unde alias perspiciatis ullam eius aperiam expedita numquam.</p>
     </div>
   </div>
+  <Roles></Roles>
   <div class="row">
     <div class="container">
       <hr>
         <div class="d-flex justify-content-between">
-            <h3>User&Roles</h3>
-            <button @click="addRoles()" class="btn btn-primary">Add Roles</button>
+            <h3>Users</h3>
+            <button @click="addUser()" class="btn btn-primary">Add User</button>
         </div>
         <hr>
         <table class="table">
@@ -29,8 +30,8 @@
                   <td>{{user.name}}</td>
                   <td>{{user.email}}</td>
                   <td>
-                    <ul>
-                      <li v-for="(role,index) in user.roles" :key="index">{{role.name}}</li>
+                    <ul class="p-0">
+                      <li class="list-unstyled" v-for="(role,index) in user.roles" :key="index">{{role.name}}</li>
                     </ul>
                   </td>
                   <td>
@@ -41,37 +42,6 @@
           </tbody>
         </table>
     </div>
-  </div>
-  <!-- Add roles Modal -->
-  <div class="modal fade" id="addRoles" tabindex="-1" role="dialog" aria-labelledby="add" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Add Roles</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-              </button>
-          </div>
-          <div class="modal-body">
-              <form class="row" enctype="multipart/form-data">
-                  <div class="col-md-12">
-                      <div class="form-group">
-                          <label class="d-flex" for="exampleInputEmail1">Role Name</label>
-                          <input type="text" v-model="role.name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="role name">
-                      </div>
-                      <div class="form-group">
-                          <label class="d-flex" for="exampleFormControlTextarea1">Description</label>
-                          <textarea class="form-control" id="exampleFormControlTextarea1" v-model="role.description" rows="3" style="resize:none;"></textarea>
-                      </div>
-                  </div>
-              </form>
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" @click="saveRole()">Save</button>
-          </div>
-          </div>
-      </div>
   </div>
   <!-- edit user Modal -->
   <div class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-labelledby="add" aria-hidden="true">
@@ -110,37 +80,6 @@
           </div>
       </div>
   </div>
-  <!-- edit roles Modal -->
-  <div class="modal fade" id="editRoles" tabindex="-1" role="dialog" aria-labelledby="add" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Edit Roles</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-              </button>
-          </div>
-          <div class="modal-body">
-              <form class="row" enctype="multipart/form-data">
-                  <div class="col-md-12">
-                      <div class="form-group">
-                          <label class="d-flex" for="exampleInputEmail1">Role Name</label>
-                          <input type="text" v-model="role.name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="role name">
-                      </div>
-                      <div class="form-group">
-                          <label class="d-flex" for="exampleFormControlTextarea1">Description</label>
-                          <textarea class="form-control" id="exampleFormControlTextarea1" v-model="role.description" rows="3" style="resize:none;"></textarea>
-                      </div>
-                  </div>
-              </form>
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" @click="saveRole()">Save</button>
-          </div>
-          </div>
-      </div>
-  </div>
 </template>
 
 <script>
@@ -149,9 +88,10 @@ import Swal from 'sweetalert2';
 import db from '../../db';
 import Toast from '../../sweetAlart';
 import $ from 'jquery';
+import Roles from '../adminComponents/Roles';
 
 export default {
-  components:{MultiSelect},
+  components:{MultiSelect,Roles},
   data(){
     return{
       user:{
@@ -159,36 +99,14 @@ export default {
         email:'',
         roles:[]
       },
-
-      users:[],
       roles:[],
+      updatedRoles:[],
+      users:[],
       updatedUsers:[],
       activeUserId:'',
-
-      role:{
-        name:'',
-        description:'',
-      },
     }
   },
   methods:{
-    addRoles(){
-      this.clearRoleField();
-      $("#addRoles").modal("show");
-    },
-    async saveRole(){
-      await db.collection("Roles").add(this.role);
-      $("#addRoles").modal("hide");
-      this.clearRoleField();
-      Toast.fire({
-        icon: 'success',
-        title: 'Role created successfully'
-      });
-    },
-    clearRoleField(){
-      this.role.name='';
-      this.role.description='';
-    },
     edit(user){
       this.user.name = user.name;
       this.user.email = user.email;
@@ -196,6 +114,8 @@ export default {
       this.activeUserId = user.id;
       $("#editUser").modal("show");
     },
+
+
     async updateUser(){
       await db.collection("Accounts").doc(this.activeUserId).update(this.user);
       $("#editUser").modal("hide");
@@ -237,14 +157,16 @@ export default {
         this.users = this.updatedUsers;
         this.updatedUsers=[];
     });
-
-    db.collection("Roles").get().then((docs)=>{
-      docs.forEach(doc => {
-        // let id = doc.id;
-        const rolesData = doc.data();
-        this.roles.push(rolesData);
-      });
+    db.collection("Roles").onSnapshot((querySnapshot)=>{
+        querySnapshot.forEach(doc => {
+            // let id = doc.id;
+            const rolesData = doc.data();
+            this.updatedRoles.push(rolesData);
+        });
+        this.roles=this.updatedRoles;
+        this.updatedRoles=[];
     })
+    
     
   }
 }

@@ -91,7 +91,7 @@ export default {
                 console.log(error);
             });
         },
-        async  register() {
+        async register() {
             this.isLoading = true;
             const user = await firebase.auth().createUserWithEmailAndPassword(this.email, this.password);
             
