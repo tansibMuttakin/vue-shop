@@ -21,19 +21,47 @@
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                 <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
             </form>
-            <button type="button" class="btn btn-outline-success my-2 ml-2 my-sm-0" data-toggle="modal" data-target="#login-modal">
+            <button  type="button" v-if="!isUserLoggedIn" class="btn btn-outline-success my-2 ml-2 my-sm-0" data-toggle="modal" data-target="#login-modal">
                 Login
             </button>
-            <!-- <button type="button" @click="logout()" class="btn btn-outline-success my-2 ml-2 my-sm-0">
+            <button type="button" v-else @click="logout()" class="btn btn-outline-success my-2 ml-2 my-sm-0">
                 Logout
-            </button> -->
+            </button>
             <button class="btn btn-outline-success my-2 ml-2 my-sm-0" type="submit" data-toggle="modal" data-target="#cart-modal">Cart</button>
         </div>
     </nav>
 </template>
 
 <script>
+import firebase from '../firebase';
+import Toast from '../sweetAlart';
 export default {
+    data(){
+        return{
+            isUserLoggedIn:false,
+        }
+    },
+    methods:{
+        logout(){
+            firebase.auth().signOut().then(()=> {
+                this.isUserLoggedIn=false;
+                this.$router.replace('/');
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Signed out successfully',
+                });
+            }).catch(function(error) {
+                console.log(error);
+            });
+        }
+    },
+    mounted(){
+        firebase.auth().onAuthStateChanged((user)=> {
+            if (user) {
+                this.isUserLoggedIn=true;
+            }
+        });
+    }
 }
 </script>
 

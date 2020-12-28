@@ -267,6 +267,7 @@
 <script>
 import firebase from '../firebase';
 import db from '../db';
+import Toast from '../sweetAlart';
 
 export default {
     data(){
@@ -282,7 +283,10 @@ export default {
         logout(){
             firebase.auth().signOut().then(() =>{
                 this.$router.replace('/');
-                console.log('you are logged out');
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Signed out successfully',
+                });
             }).catch(function(error) {
                 console.log(error);
             });
