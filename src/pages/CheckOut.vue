@@ -20,19 +20,27 @@
                             <span class="text-muted">$ {{(item.itemPrice)*(item.itemQuantity)}}</span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between bg-secondary text-white">
-                            <span>Total (USD)</span>
-                            <strong>${{totalPrice}}</strong>
+                                <span>Total (USD)</span>
+                                <strong v-if="discountApplied">${{discountedPrice}}</strong>
+                                <strong v-else>${{totalPrice}}</strong>
                             </li>
                         </ul>
+                        <small class="d-flex mb-2">use&nbsp;<b>BIJOY25</b>&nbsp;to get 25% off on total price.</small>
 
                         <form class="card p-2">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Promo code">
-                            <div class="input-group-append">
-                                <button type="submit" class="btn btn-secondary">Redeem</button>
-                            </div>
+                                <input type="text" v-model="promo" class="form-control" placeholder="Promo code">
+                                <div class="input-group-append">
+                                    <button @click.prevent="applyDiscount()" type="submit" class="btn btn-secondary">Redeem</button>
+                                </div>
                             </div>
                         </form>
+                        <div ref="error-message" style="display:none">
+                            <p class="d-flex my-2 text-danger">invalid cuppon code</p>
+                        </div>
+                        <div ref="sucess-message" style="display:none">
+                            <p class="d-flex my-2 text-success">Cuppon code added successfully</p>
+                        </div>
                     </div>
                     <div class="col-md-8 order-md-1 text-left">
                         <h4 class="mb-3">Billing address</h4>
@@ -76,21 +84,19 @@
 
                             <div class="row">
                                 <div class="col-md-5 mb-3">
-                                    <label for="country">Country</label>
-                                    <select class="custom-select d-block w-100" id="country" v-model="billingInfo.country" required>
+                                    <label for="city">City</label>
+                                    <!-- <select class="custom-select d-block w-100" id="country" v-model="billingInfo.city" required>
                                         <option value="">Choose...</option>
                                         <option>United States</option>
-                                    </select>
+                                    </select> -->
+                                    <input type="text" class="form-control" id="city" v-model="billingInfo.city" placeholder="City">
                                     <div class="invalid-feedback">
                                         Please select a valid country.
                                     </div>
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                    <label for="state">State</label>
-                                    <select class="custom-select d-block w-100" id="state" v-model="billingInfo.state" required>
-                                        <option value="">Choose...</option>
-                                        <option>California</option>
-                                    </select>
+                                    <label for="area">Area</label>
+                                    <input type="text" class="form-control" id="area" v-model="billingInfo.area" placeholder="Area">
                                     <div class="invalid-feedback">
                                         Please provide a valid state.
                                     </div>
@@ -117,23 +123,42 @@
                             <h4 class="d-flex mb-3">Payment</h4>
 
                             <div class="d-block my-3">
+                                <!-- <input type="radio" id="one" value="One" v-model="picked">
+                                <label for="one">One</label>
+                                <br>
+                                <input type="radio" id="two" value="Two" v-model="picked" checked>
+                                <label for="two">Two</label>
+                                <br>
+                                <span>Picked: {{ picked }}</span> -->
                                 <div class="d-flex custom-control custom-radio">
-                                    <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required>
+                                    <input id="cod" value="cash-on-delivery" v-model="paymentInfo.paymentMethod" type="radio" class="custom-control-input" required>
+                                    <label class="custom-control-label" for="cod">Cash On Delivery</label>
+                                </div>
+                                <div class="d-flex custom-control custom-radio">
+                                    <input id="credit" value="credit-card" v-model="paymentInfo.paymentMethod" type="radio" class="custom-control-input" required>
                                     <label class="custom-control-label" for="credit">Credit card</label>
                                 </div>
                                 <div class="d-flex custom-control custom-radio">
-                                    <input id="debit" name="paymentMethod" type="radio" class="custom-control-input" required>
+                                    <input id="debit" value="debit-card" v-model="paymentInfo.paymentMethod" type="radio" class="custom-control-input" required>
                                     <label class="custom-control-label" for="debit">Debit card</label>
                                 </div>
                                 <div class="d-flex custom-control custom-radio">
-                                    <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input" required>
-                                    <label class="custom-control-label" for="paypal">Paypal</label>
+                                    <input id="bkash" value="bkash" v-model="paymentInfo.paymentMethod" type="radio" class="custom-control-input" required>
+                                    <label class="custom-control-label" for="bkash">Bkash</label>
+                                </div>
+                                <div class="d-flex custom-control custom-radio">
+                                    <input id="nagad" value="nagad" v-model="paymentInfo.paymentMethod" type="radio" class="custom-control-input" required>
+                                    <label class="custom-control-label" for="nagad">Nagad</label>
+                                </div>
+                                <div class="d-flex custom-control custom-radio">
+                                    <input id="rocket" value="rocket" v-model="paymentInfo.paymentMethod" type="radio" class="custom-control-input" required>
+                                    <label class="custom-control-label" for="rocket">Rocket</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="cc-name">Name on card</label>
-                                    <input type="text" class="form-control" id="cc-name" placeholder="" required>
+                                    <input type="text" class="form-control" id="cc-name" v-model="paymentInfo.nameOnCard" placeholder="" required>
                                     <small class="text-muted">Full name as displayed on card</small>
                                     <div class="invalid-feedback">
                                     Name on card is required
@@ -141,7 +166,7 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="cc-number">Credit card number</label>
-                                    <input type="text" class="form-control" id="cc-number" placeholder="" required>
+                                    <input type="text" class="form-control" id="cc-number" v-model="paymentInfo.creditCardNumber" placeholder="" required>
                                     <div class="invalid-feedback">
                                         Credit card number is required
                                     </div>
@@ -150,21 +175,21 @@
                             <div class="row">
                                 <div class="col-md-3 mb-3">
                                     <label for="cc-expiration">Expiration</label>
-                                    <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
+                                    <input type="text" class="form-control" id="cc-expiration" v-model="paymentInfo.expiration" placeholder="" required>
                                     <div class="invalid-feedback">
                                     Expiration date required
                                     </div>
                                 </div>
                             <div class="col-md-3 mb-3">
                                 <label for="cc-expiration">CVV</label>
-                                <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
+                                <input type="text" class="form-control" v-model="paymentInfo.cvv" id="cc-cvv" placeholder="" required>
                                 <div class="invalid-feedback">
                                     Security code required
                                 </div>
                             </div>
                             </div>
                             <hr class="mb-4">
-                            <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+                            <button class="btn btn-primary btn-lg btn-block" @click.prevent="makeTransaction()" type="submit">Continue to checkout</button>
                         </form>
                     </div>
                 </div>
@@ -194,22 +219,45 @@ import Login from '../components/Login';
 import firebase from '../firebase';
 import $ from 'jquery';
 import Toast from '../sweetAlart';
+import db from '../db';
+import moment from 'moment';
+
 export default {
     components:{Navbar,Sidebar,Login},
     data(){
         return{
             showSidebar:false,
             message:'Login/Rgesiter to complete the order',
+            order:{},
+            orderInfo:{
+                invoiceId:'',
+                orderDate:'',
+                status:'',
+                purchasedItems:[],
+                totalPrice:'',
+                discountedPrice:'',
+            },
             billingInfo:{
                 firstName:'',
                 lastName:'',
                 email:'',
                 address:'',
                 optionalAddress:'',
-                country:'',
-                state:'',
+                city:'',
+                area:'',
                 zip:'',
-            }
+            },
+            paymentInfo:{
+                paymentMethod:'',
+                nameOnCard:'',
+                cvv:'',
+                expiration:'',
+                creditCardNumber:''
+            },
+            picked:'',
+            promo:'',
+            discountApplied:false,
+            invoiceNum: 100000,
         }
     },
     methods:{
@@ -236,7 +284,46 @@ export default {
                     $("#login-modal").modal('show');
                 }
             })
-        }
+        },
+        applyDiscount(){
+            if (this.promo=='BIJOY25') {
+                this.discountApplied = true;
+                this.$refs['sucess-message'].style.display="block";
+                this.$refs['error-message'].style.display="none";
+            }
+            else{
+                this.$refs['sucess-message'].style.display="none";
+                this.$refs['error-message'].style.display="block";
+            }
+        },
+        async makeTransaction(){
+            const user = firebase.auth().currentUser;
+            if (user) {
+                // extracting user info- start
+                const userData = await db.collection("Accounts").doc(user.uid).get();
+                let id = userData.id;
+                let userInfo = {id,...userData.data()};
+                // extracting user info - end
+
+                //setting orderInfo-start
+                this.orderInfo.orderDate = moment().format("DD-MM-YYYY");
+                this.orderInfo.invoiceId = 'VS'+this.invoiceNum;
+                this.orderInfo.totalPrice = this.totalPrice;
+                this.orderInfo.discountedPrice = this.discountedPrice;
+                this.orderInfo.status = 'paid';
+                this.orderInfo.purchasedItems= this.$store.state.cart;
+                //setting order info - end
+
+                this.order.orderInfo = this.orderInfo;
+                this.order.userInfo = userInfo;
+                this.order.billingInfo = this.billingInfo;
+                this.order.paymentInfo = this.paymentInfo;
+                await db.collection("Orders").add(this.order);
+                this.order={};
+                this.invoiceNum++;
+            }
+        },
+        
     },
     computed:{
         totalPrice(){
@@ -245,8 +332,18 @@ export default {
                 totalPrice += el.itemPrice*el.itemQuantity;
             });
             return totalPrice;
+        },
+        discountedPrice(){
+            return this.totalPrice-this.totalPrice*.25
         }
+    },
+    created(){
+        this.paymentInfo.paymentMethod = 'cash-on-delivery';
+    },
+    mounted(){
+
     }
+    
 }
 </script>
 

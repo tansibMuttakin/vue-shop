@@ -229,33 +229,8 @@
             <!-- page-content  -->
             <main class="page-content pt-2">
                 <div class="container p-5">
-                    <!-- <div class="row">
-                        <div class="form-group col-md-12">
-                            <h2>Pro Sidebar</h2>
-                            <p>This is a responsive sidebar template with dropdown menu based on bootstrap framework.</p>
-
-                        </div>
-                        <div class="form-group col-md-12">
-                            <iframe
-                                src="https://ghbtns.com/github-btn.html?user=azouaoui-med&repo=pro-sidebar-template&type=star&count=true&size=small"
-                                frameborder="0" scrolling="0" width="100px" height="30px"></iframe>
-                            <iframe
-                                src="https://ghbtns.com/github-btn.html?user=azouaoui-med&repo=pro-sidebar-template&type=fork&count=true&size=small"
-                                frameborder="0" scrolling="0" width="100px" height="30px"></iframe>
-                        </div>
-
-                        <div class="form-group col-md-12">
-                            <a id="toggle-sidebar" class="btn btn-secondary rounded-0" href="#">
-                                <span>Toggle Sidebar</span>
-                            </a>
-                            <a id="pin-sidebar" class="btn btn-outline-secondary rounded-0" href="#">
-                                <span>Pin Sidebar</span>
-                            </a>
-
-                        </div>
-                    </div> -->
-                    <router-view></router-view>
                 </div>
+                <router-view></router-view>
             </main>
             <!-- page-content" -->
         </div>
