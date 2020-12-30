@@ -228,7 +228,7 @@
             </nav>
             <!-- page-content  -->
             <main class="page-content pt-2">
-                <div class="container p-5">
+                <div class="container">
                 </div>
                 <router-view></router-view>
             </main>

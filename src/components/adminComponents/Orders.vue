@@ -40,7 +40,7 @@
                         </td>
                         <td class="d-flex" style="justify-content:space-evenly">
                             <i class="pi pi-download" v-tooltip.top="'download invoice'"></i>
-                            <i class="pi pi-eye" v-tooltip.top="'view invoice'"></i>
+                            <i class="pi pi-eye" @click="viewInvoice()" v-tooltip.top="'view invoice'"></i>
                             <i class="pi pi-info-circle" v-tooltip.top="'edit order'"></i>
                             <i class="pi pi-trash" v-tooltip.left="'delete order'"></i>
                         </td>
@@ -63,6 +63,11 @@ export default {
         return{
             orders:[],
             updatedOrders:[],
+        }
+    },
+    methods:{
+        viewInvoice(){
+            this.$router.push('/admin/invoice');
         }
     },
     async mounted(){

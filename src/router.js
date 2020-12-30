@@ -9,6 +9,7 @@ import Overview from './components/adminComponents/Overview';
 import Products from './components/adminComponents/Products';
 import Profile from './components/adminComponents/Profile';
 import Dashboard from './components/adminComponents/Dashboard';
+import Invoice from './components/adminComponents/Invoice';
 import NotFound from './components/NotFound';
 import AllProducts from './pages/AllProducts';
 import Categories from './pages/Categories';
@@ -43,6 +44,7 @@ const routes = [
       { path: 'products', component: Products},
       { path: 'orders', component: Orders},
       { path: 'profile', component: Profile},
+      { path: 'invoice', component: Invoice},
     ]
   },
   {
