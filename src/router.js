@@ -5,7 +5,7 @@ import About from './pages/About';
 import CheckOut from './pages/CheckOut';
 import Admin from './pages/Admin';
 import Orders from './components/adminComponents/Orders';
-import Overview from './components/adminComponents/Overview';
+import Category from './components/adminComponents/Category';
 import Products from './components/adminComponents/Products';
 import Profile from './components/adminComponents/Profile';
 import Dashboard from './components/adminComponents/Dashboard';
@@ -13,6 +13,8 @@ import Invoice from './components/adminComponents/Invoice';
 import NotFound from './components/NotFound';
 import AllProducts from './pages/AllProducts';
 import Categories from './pages/Categories';
+import User from './components/adminComponents/Users';
+import Roles from './components/adminComponents/Roles';
 
 // register route path and respective components
 const routes = [
@@ -40,7 +42,9 @@ const routes = [
     meta: { requiresAuth: true },
     children: [
       { path: '', component: Dashboard},
-      { path: 'overview', component: Overview },
+      { path:'users',component:User},
+      { path:'roles',component:Roles},
+      { path: 'category', component: Category},
       { path: 'products', component: Products},
       { path: 'orders', component: Orders},
       { path: 'profile', component: Profile},

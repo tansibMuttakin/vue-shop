@@ -14,7 +14,7 @@
         <hr>
         <div class="d-flex justify-content-between">
             <h3>Category list</h3>
-            <button class="btn btn-primary" @click="showAddModal()">Add Category</button>
+            <button class="btn btn-primary btn-sm" @click="showAddModal()">Add Category</button>
         </div>
         <hr>
         <table class="table">
@@ -30,10 +30,10 @@
                 <tr v-for="(category,index) in categories" :key="index">
                     <td>{{++index}}</td>
                     <td>{{category.data().name}}</td>
-                    <td>{{category.data().description}}</td>
+                    <td style="width:30%">{{category.data().description}}</td>
                     <td>
-                        <button class="btn btn-info" @click="edit(category)">Edit</button>
-                        <button class="btn btn-danger" @click="destroy(category)">Delete</button>
+                        <button class="btn btn-info btn-sm mx-1" @click="edit(category)">Edit</button>
+                        <button class="btn btn-danger btn-sm" @click="destroy(category)">Delete</button>
                     </td>
                 </tr>
             </tbody>

@@ -14,7 +14,7 @@
         <hr>
         <div class="d-flex justify-content-between">
             <h3>Product list</h3>
-            <button class="btn btn-primary" @click="showAddModal()">Add Product</button>
+            <button class="btn btn-primary btn-sm" @click="showAddModal()">Add Product</button>
         </div>
         <hr>
         <table class="table">
@@ -36,8 +36,8 @@
                     <td>{{product.data().category.name}}</td>
                     <td>{{product.data().price}}</td>
                     <td>
-                        <button class="btn btn-info" @click="edit(product)">Edit</button>
-                        <button class="btn btn-danger" @click="destroy(product)">Delete</button>
+                        <button class="btn btn-info btn-sm mx-1" @click="edit(product)">Edit</button>
+                        <button class="btn btn-danger btn-sm" @click="destroy(product)">Delete</button>
                     </td>
                 </tr>
             </tbody>

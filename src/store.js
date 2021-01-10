@@ -1,13 +1,16 @@
-import { createStore } from 'vuex'
+import { createStore } from 'vuex';
+import createPersistedState from "vuex-persistedstate";
 let cart  = window.localStorage.getItem('cart');
 
 // Create a new store instance.
 const store = createStore({
+  
   state () {
     return {
         cart:cart ? JSON.parse(cart) : [],
     }
   },
+  plugins: [createPersistedState()], //persists the state
   mutations:{
     addToCart(state,payload){
       let found = state.cart.find(item => item.itemId == payload.itemId);

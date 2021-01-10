@@ -49,14 +49,32 @@
                             </li>
 
                             <li>
-                                <router-link to="/admin/overview">
-                                    <i class="fa fa-chart-line"></i>
+                                <router-link to="/admin/">
+                                    <i class="fa fa-hashtag"></i>
+                                    <span>Dashboard</span>
+                                </router-link>
+                            </li>
+                            <li>
+                                <router-link to="/admin/users">
+                                    <i class="fa fa-users"></i>
+                                    <span>Users</span>
+                                </router-link>
+                            </li>
+                            <li>
+                                <router-link to="/admin/roles">
+                                    <i class="fa fa-cog"></i>
+                                    <span>Roles</span>
+                                </router-link>
+                            </li>
+                            <li>
+                                <router-link to="/admin/category">
+                                    <i class="fa fa-folder"></i>
                                     <span>Category</span>
                                 </router-link>
                             </li>
                             <li>
                                 <router-link to="/admin/products">
-                                    <i class="fab fa-amazon"></i>
+                                    <i class="fa fa-laptop"></i>
                                     <span>Products</span>
                                 </router-link>
                             </li>

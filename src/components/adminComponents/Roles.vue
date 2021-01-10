@@ -4,7 +4,7 @@
       <hr>
       <div class="d-flex justify-content-between">
           <h3>Roles</h3>
-          <button @click="addRoles()" class="btn btn-primary">Add Roles</button>
+          <button @click="addRoles()" class="btn btn-primary btn-sm">Add Roles</button>
       </div>
       <hr>
       <table class="table">
@@ -20,10 +20,10 @@
             <tr v-for="(role,index) in roles" :key="role.id">
                 <td>{{++index}}</td>
                 <td>{{role.name}}</td>
-                <td>{{role.description}}</td>
+                <td style="width:30%">{{role.description}}</td>
                 <td>
-                    <button class="btn btn-info" @click="edit(role)">Edit</button>
-                    <button class="btn btn-danger" @click="destroy(role)">Delete</button>
+                    <button class="btn btn-info btn-sm mx-1" @click="edit(role)">Edit</button>
+                    <button class="btn btn-danger btn-sm" @click="destroy(role)">Delete</button>
                 </td>
             </tr>
         </tbody>

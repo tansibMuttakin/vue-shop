@@ -92,6 +92,7 @@
 
 <script>
 import html2pdf from 'html2pdf.js';
+
 import Tooltip from 'primevue/tooltip';
 export default {
     directives: {
@@ -104,8 +105,14 @@ export default {
     },
     methods:{
         pdfDownload(){
-            window.print();
-            html2pdf().from(this.$refs.invoice).save('invoice');
+            let opt = {
+                margin:       [0.5,0.5],
+                filename:     'invoice.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(this.$refs.invoice).save('invoice');
         }
     },
     created(){
@@ -120,7 +127,7 @@ export default {
 
 <style lang="scss" scoped>
     .wrapper{
-        width: 70%;
+        width: 80%;
         margin: auto;
     }
     p{
