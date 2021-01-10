@@ -11,8 +11,8 @@
                         <p>3500</p>
                     </div>
                     <div class="digital-contacts">
-                        <p>companyemail@gmail.com</p>
-                        <p>www.companyname.inc</p>
+                        <p><i class="pi pi-envelope" style="fontSize: 1rem"></i> companyemail@gmail.com</p>
+                        <p><i class="pi pi-globe" style="fontSize: 1rem"></i> www.companyname.inc</p>
                     </div>
                 </div>
             </div>
@@ -22,20 +22,21 @@
         </div>
         <div class="billing-info">
             <h5>Billed To:</h5>
-            <p>Tansib-Al-Muhaimin</p>
-            <p>Kachpur,Naryanganj</p>
-            <p>Dhaka,Bangladesh</p>
-            <p>1200</p>
+            <p>{{order.billingInfo.firstName}}{{order.billingInfo.lastName}}</p>
+            <p>{{order.billingInfo.address}}</p>
+            <p>{{order.billingInfo.city}}-{{order.billingInfo.zip}}</p>
+            <p><i class="pi pi-mobile" style="fontSize: 1rem"></i> 01839224536</p>
+            <p><i class="pi pi-envelope" style="fontSize: 1rem"></i> {{order.billingInfo.email}}</p>
         </div>
         <div class="invoice">
             <div class="invoice-info">
                 <div class="mb-4">
                     <h2>INVOICE</h2>
-                    <p># VS1000001</p>
+                    <p># {{order.orderInfo.invoiceId}}</p>
                 </div>
                 <div>
                     <h5>Date of Issue</h5>
-                    <p>31-12-2020</p>
+                    <p>{{order.orderInfo.orderDate}}</p>
                 </div>
             </div>
             <div class="product-table">
@@ -49,53 +50,35 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td scope="row">scawda</td>
-                            <td>$345</td>
-                            <td>2</td>
-                            <td>$690</td>
-                        </tr>
-                        <tr>
-                            <td scope="row">scawda</td>
-                            <td>$345</td>
-                            <td>2</td>
-                            <td>$690</td>
-                        </tr>
-                        <tr>
-                            <td scope="row">scawda</td>
-                            <td>$345</td>
-                            <td>2</td>
-                            <td>$690</td>
-                        </tr>
-                        <tr>
-                            <td scope="row">scawda</td>
-                            <td>$345</td>
-                            <td>2</td>
-                            <td>$690</td>
+                        <tr v-for="item in order.orderInfo.purchasedItems" :key="item.itemId">
+                            <td scope="row">{{item.itemName}}</td>
+                            <td>${{item.itemPrice}}</td>
+                            <td>{{item.itemQuantity}}</td>
+                            <td>${{+item.itemPrice * item.itemQuantity}}</td>
                         </tr>
                     </tbody>
                 </table>
                 <div class="pricing">
                     <div class="d-flex justify-content-between">
                         <p>SUBTOTAL:</p>
-                        <p>$128</p>
+                        <p>${{order.orderInfo.totalPrice}}</p>
                     </div>
                     <div class="d-flex justify-content-between">
                         <p>DISCOUNT:</p>
-                        <p>25%</p>
+                        <p>{{order.orderInfo.discount}}%</p>
                     </div>
                     <div class="d-flex justify-content-between">
                         <p>(TAX RATE):</p>
-                        <p>2%</p>
+                        <p>{{order.orderInfo.tax}}%</p>
                     </div>
                     <div class="d-flex justify-content-between">
                         <p>TAX:</p>
-                        <p>200</p>
+                        <p>{{+order.orderInfo.discountedPrice * (order.orderInfo.tax/100)}}</p>
                     </div>
                     <div class="dash">
                     </div>
                     <p>INVOICE TOTAL</p>
-                    <h5>$2400</h5>
+                    <h5>${{(+order.orderInfo.discountedPrice * order.orderInfo.tax/100)+(+order.orderInfo.discountedPrice)}}</h5>
                 </div>
             </div>
         </div>
@@ -104,7 +87,16 @@
 
 <script>
 export default {
-
+    data(){
+        return{
+            order:{},
+        }
+    },
+    created(){
+        this.order =  JSON.parse(atob(this.$route.query.order));
+        console.log(this.order);
+    },
+    
 }
 </script>
 
@@ -126,7 +118,7 @@ export default {
             margin-bottom: .3em;
         }
         .company-details{
-            width: 30%;
+            width: 33%;
         }
         .contacts{
             display: flex;
@@ -149,7 +141,7 @@ export default {
             .pricing{
                 width: 29%;
                 float: right;
-                margin-right: 12%;
+                // margin-right: 12%;
                 p{
                     font-size: 0.8rem;
                 }

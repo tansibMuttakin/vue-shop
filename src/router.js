@@ -44,7 +44,11 @@ const routes = [
       { path: 'products', component: Products},
       { path: 'orders', component: Orders},
       { path: 'profile', component: Profile},
-      { path: 'invoice', component: Invoice},
+      { 
+        path: 'invoice/:orderId',
+        name:'invoice', 
+        component: Invoice,
+      },
     ]
   },
   {

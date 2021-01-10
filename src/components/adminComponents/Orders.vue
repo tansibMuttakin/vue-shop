@@ -13,7 +13,10 @@
         </div>
     </div>
     <div class="container-fluid">
-        <div class="row">
+        <div v-if="isLoading">
+            <i class="pi pi-spin pi-spinner" style="fontSize: 2rem"></i>
+        </div>
+        <div v-else class="row">
             <table class="table">
                 <thead>
                     <tr>
@@ -40,7 +43,7 @@
                         </td>
                         <td class="d-flex" style="justify-content:space-evenly">
                             <i class="pi pi-download" v-tooltip.top="'download invoice'"></i>
-                            <i class="pi pi-eye" @click="viewInvoice()" v-tooltip.top="'view invoice'"></i>
+                            <i class="pi pi-eye" @click="viewInvoice(order)" v-tooltip.top="'view invoice'"></i>
                             <i class="pi pi-info-circle" v-tooltip.top="'edit order'"></i>
                             <i class="pi pi-trash" v-tooltip.left="'delete order'"></i>
                         </td>
@@ -63,11 +66,16 @@ export default {
         return{
             orders:[],
             updatedOrders:[],
+            isLoading:false,
         }
     },
     methods:{
-        viewInvoice(){
-            this.$router.push('/admin/invoice');
+        viewInvoice(order){
+            this.$router.push({
+                name:'invoice',
+                params:{orderId:order.id,},
+                query:{order:btoa(JSON.stringify(order))}
+            });
         }
     },
     async mounted(){
@@ -80,6 +88,7 @@ export default {
         //     this.orders = this.updatedOrders;
         //     this.updatedOrders=[];
         // });
+        this.isLoading = true;
         const orders = await db.collection("Orders").get();
         orders.forEach((doc)=>{
             let id = doc.id;
@@ -89,6 +98,7 @@ export default {
         })
         this.orders = this.updatedOrders;
         this.updatedOrders=[];
+        this.isLoading=false;
     }
 
 }

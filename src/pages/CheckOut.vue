@@ -235,6 +235,8 @@ export default {
                 status:'',
                 purchasedItems:[],
                 totalPrice:'',
+                discount:'',
+                tax:'',
                 discountedPrice:'',
             },
             billingInfo:{
@@ -311,6 +313,8 @@ export default {
                 this.orderInfo.totalPrice = this.totalPrice;
                 this.orderInfo.discountedPrice = this.discountedPrice;
                 this.orderInfo.status = 'paid';
+                this.orderInfo.tax = 2;
+                this.orderInfo.discount = 25;
                 this.orderInfo.purchasedItems= this.$store.state.cart;
                 //setting order info - end
 
