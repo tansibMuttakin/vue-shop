@@ -41,7 +41,7 @@ const store = createStore({
       if (found.itemQuantity>1) {
         found.itemQuantity--;
       }
-    }
+    },
   }
 })
 export default store;

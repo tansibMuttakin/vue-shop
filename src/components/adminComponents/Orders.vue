@@ -34,7 +34,7 @@
                     <tr v-for="(order,index) in orders" :key="order.id">
                         <td>{{++index}}</td>
                         <td>{{order.id}}</td>
-                        <td>{{order.orderInfo.invoiceId}}</td>
+                        <td style="width:15%">{{order.orderInfo.invoiceId}}</td>
                         <td>{{order.orderInfo.purchasedItems.length}} - items</td>
                         <td>{{order.orderInfo.orderDate}}</td>
                         <td>${{order.orderInfo.totalPrice}}</td>
@@ -42,10 +42,10 @@
                             <p class="badge badge-success">{{order.orderInfo.status}}</p>
                         </td>
                         <td class="d-flex" style="justify-content:space-evenly">
-                            <i class="pi pi-download" v-tooltip.top="'download invoice'"></i>
+                            <!-- <i class="pi pi-download" v-tooltip.top="'download invoice'"></i> -->
                             <i class="pi pi-eye" @click="viewInvoice(order)" v-tooltip.top="'view invoice'"></i>
                             <i class="pi pi-info-circle" v-tooltip.top="'edit order'"></i>
-                            <i class="pi pi-trash" v-tooltip.left="'delete order'"></i>
+                            <i class="pi pi-trash" @click="deleteOrder(order)" v-tooltip.left="'delete order'"></i>
                         </td>
                     </tr>
                 </tbody>
@@ -57,6 +57,7 @@
 <script>
 import db from '../../db';
 import Tooltip from 'primevue/tooltip';
+import Toast from '../../sweetAlart';
 
 export default {
     directives: {
@@ -76,29 +77,40 @@ export default {
                 params:{orderId:order.id,},
                 query:{order:btoa(JSON.stringify(order))}
             });
+        },
+        async deleteOrder(order){
+            await db.collection("Orders").doc(order.id).delete();
+            Toast.fire({
+                icon: 'success',
+                title: 'Order removed successfully'
+            })
+
         }
     },
-    async mounted(){
-        // db.collection("Orders").onSnapshot((querySnapshot)=>{
-        //     querySnapshot.forEach((doc)=>{
-        //         let id = doc.id;
-        //         const orderInfo = {id,...doc.data()};
-        //         this.updatedOrders.push = orderInfo;
-        //     })
-        //     this.orders = this.updatedOrders;
-        //     this.updatedOrders=[];
-        // });
+    mounted(){
         this.isLoading = true;
-        const orders = await db.collection("Orders").get();
-        orders.forEach((doc)=>{
-            let id = doc.id;
-            const orderInfo = {id,...doc.data()};
-            this.updatedOrders.push(orderInfo);
-            console.log(doc.data());
-        })
-        this.orders = this.updatedOrders;
-        this.updatedOrders=[];
-        this.isLoading=false;
+        db.collection("Orders").onSnapshot((querySnapshot)=>{
+            querySnapshot.forEach((doc)=>{
+                let id = doc.id;
+                const orderInfo = {id,...doc.data()};
+                this.updatedOrders.push(orderInfo);
+            })
+            this.orders = this.updatedOrders;
+            this.updatedOrders=[];
+            this.isLoading=false;
+        });
+        console.log(this.$refs.invoice)
+        
+        // const orders = await db.collection("Orders").get();
+        // orders.forEach((doc)=>{
+        //     let id = doc.id;
+        //     const orderInfo = {id,...doc.data()};
+        //     this.updatedOrders.push(orderInfo);
+        //     console.log(doc.data());
+        // })
+        // this.orders = this.updatedOrders;
+        // this.updatedOrders=[];
+        // this.isLoading=false;
     }
 
 }

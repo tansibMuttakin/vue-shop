@@ -221,6 +221,7 @@ import $ from 'jquery';
 import Toast from '../sweetAlart';
 import db from '../db';
 import moment from 'moment';
+import { v4 as uuidv4 } from 'uuid';
 
 export default {
     components:{Navbar,Sidebar,Login},
@@ -259,7 +260,7 @@ export default {
             picked:'',
             promo:'',
             discountApplied:false,
-            invoiceNum: 100000,
+            invoiceNum:'',
         }
     },
     methods:{
@@ -299,6 +300,13 @@ export default {
             }
         },
         async makeTransaction(){
+            if (this.$store.state.cart.length == 0) {
+                Toast.fire({
+                    icon: 'warning',
+                    title: 'OOPS! Your cart in empty!'
+                });
+                return;
+            }
             const user = firebase.auth().currentUser;
             if (user) {
                 // extracting user info- start
@@ -309,12 +317,12 @@ export default {
 
                 //setting orderInfo-start
                 this.orderInfo.orderDate = moment().format("DD-MM-YYYY");
-                this.orderInfo.invoiceId = 'VS'+this.invoiceNum;
+                this.orderInfo.invoiceId = 'VS'+ uuidv4();
                 this.orderInfo.totalPrice = this.totalPrice;
                 this.orderInfo.discountedPrice = this.discountedPrice;
-                this.orderInfo.status = 'paid';
-                this.orderInfo.tax = 2;
-                this.orderInfo.discount = 25;
+                this.orderInfo.status = 'paid'; //hard coded
+                this.orderInfo.tax = 2; //hard coded
+                this.orderInfo.discount = 25; //hard coded
                 this.orderInfo.purchasedItems= this.$store.state.cart;
                 //setting order info - end
 
@@ -324,9 +332,23 @@ export default {
                 this.order.paymentInfo = this.paymentInfo;
                 await db.collection("Orders").add(this.order);
                 this.order={};
-                this.invoiceNum++;
+
+                this.invoiceNum = this.$store.state.invoiceNum;
+
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Order placed successfully'
+                });
+                this.$store.commit('emptyCart');
+                this.billingInfo = {};
+                this.orderInfo={};
+                this.paymentInfo={};
             }
         },
+        increase(){
+            this.$store.commit('setInvoice');
+            console.log(this.$store.state.invoiceNum);
+        }
         
     },
     computed:{
@@ -344,9 +366,6 @@ export default {
     created(){
         this.paymentInfo.paymentMethod = 'cash-on-delivery';
     },
-    mounted(){
-
-    }
     
 }
 </script>
