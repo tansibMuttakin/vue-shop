@@ -15,6 +15,7 @@ import AllProducts from './pages/AllProducts';
 import Categories from './pages/Categories';
 import User from './components/adminComponents/Users';
 import Roles from './components/adminComponents/Roles';
+import Coupons from './components/adminComponents/Coupons';
 
 // register route path and respective components
 const routes = [
@@ -48,6 +49,7 @@ const routes = [
       { path: 'products', component: Products},
       { path: 'orders', component: Orders},
       { path: 'profile', component: Profile},
+      { path: 'coupons', component: Coupons},
       { 
         path: 'invoice/:orderId',
         name:'invoice', 

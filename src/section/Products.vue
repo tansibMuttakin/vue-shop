@@ -47,16 +47,17 @@
         <Carousel :value="products" :numVisible="3" :numScroll="3" :responsiveOptions="responsiveOptions" :circular="true">
             <template #item="product">
                 <div class="card product-item h-100 mx-2 position-relative">
-                    <div class="badge badge-danger text-wrap position-absolute" style="width: 3rem;right:1px;top:1px;">
-                        -15%
+                    <div v-if="product.data.discount && product.data.discount!= ''" class="badge badge-danger text-wrap position-absolute" style="width: 3rem;right:1px;top:1px;">
+                        {{product.data.discount}}%
                     </div>
                     <img src="/img/products/product1.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <p class="card-title m-0">{{product.data.productName}}</p>
                             <div class="d-flex justify-content-between align-items-center cw-32">
-                                <p class="m-0"><b>${{product.data.price}}</b></p>
-                                <small class=""><del>$500</del></small>
+                                <p v-if="product.data.discountedPrice!=''" class="m-0"><b>${{product.data.discountedPrice}}</b></p>
+                                <p v-else class="m-0">${{product.data.price}}</p>
+                                <small v-if="product.data.discountedPrice!=''" class=""><del>${{product.data.price}}</del></small>
                             </div>
                         </div>
                         <div class="d-flex justify-content-between">
@@ -64,12 +65,15 @@
                                 :product-image="product.data.images[0]"
                                 :product-id="product.data.id"
                                 :price="product.data.price"
-                                :name="product.data.productName">
+                                :name="product.data.productName"
+                                :discount="product.data.discount"
+                                :discountedPrice="product.data.discountedPrice">
                             </AddToCart>
                             <SingleProduct
                                 :id="product.data.id"
                                 :images="product.data.images"
                                 :price="product.data.price"
+                                :discount="product.data.discount"
                                 :name="product.data.productName"
                                 :description="product.data.description"
                                 :tags="product.data.tags"

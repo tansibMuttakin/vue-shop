@@ -15,6 +15,8 @@ export default {
     props:{
         name:String,
         price:String,
+        discount:String,
+        discountedPrice:String,
         productId:String,
         productImage:String,
         buttonLarge:{
@@ -45,6 +47,8 @@ export default {
                 return{
                     itemName:this.name,
                     itemPrice:this.price,
+                    itemDiscount:this.discount,
+                    itemDiscountedPrice:this.discountedPrice==undefined?'':this.discountedPrice,
                     itemId:this.productId,
                     itemImage:this.productImage,
                     itemQuantity:this.productQuantity,

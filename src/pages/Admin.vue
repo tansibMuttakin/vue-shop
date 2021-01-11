@@ -84,6 +84,12 @@
                                     <span>Orders</span>
                                 </router-link>
                             </li>
+                            <li>
+                                <router-link to="/admin/coupons">
+                                    <i class="fa fa-bullhorn"></i>
+                                    <span>Coupons</span>
+                                </router-link>
+                            </li>
 
                             <li>
                                 <router-link to="/admin/profile">

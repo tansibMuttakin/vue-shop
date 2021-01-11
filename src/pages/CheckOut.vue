@@ -15,9 +15,13 @@
                             <li v-for="item in $store.state.cart" :key="item.itemId" class="list-group-item d-flex justify-content-between lh-condensed">
                             <div>
                                 <h6 class="my-0">{{item.itemName}} <small class="text-muted">X {{item.itemQuantity}}</small></h6>
-                                <small class="text-muted float-left">$ {{item.itemPrice}}</small>
+                                <small v-if="item.itemDiscountedPrice!=''" class="text-muted float-left"><del>$ {{item.itemPrice}}</del></small>
+                                <small v-else class="text-muted float-left">$ {{item.itemPrice}}</small>
+                                <br>
+                                <small v-if="item.itemDiscountedPrice!=''" class="text-muted float-left font-weight-bold">$ {{item.itemDiscountedPrice}}</small>
                             </div>
-                            <span class="text-muted">$ {{(item.itemPrice)*(item.itemQuantity)}}</span>
+                            <span v-if="item.itemDiscount && item.itemDiscount!= '' " class="text-muted">$ {{(item.itemPrice-(item.itemPrice * item.itemDiscount/100))*(item.itemQuantity)}}</span>
+                            <span v-else class="text-muted">$ {{(item.itemPrice)*(item.itemQuantity)}}</span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between bg-secondary text-white">
                                 <span>Total (USD)</span>
@@ -295,6 +299,7 @@ export default {
                 this.$refs['error-message'].style.display="none";
             }
             else{
+                this.discountApplied = false;
                 this.$refs['sucess-message'].style.display="none";
                 this.$refs['error-message'].style.display="block";
             }
@@ -355,7 +360,14 @@ export default {
         totalPrice(){
             let totalPrice = 0;
             this.$store.state.cart.map(el=>{
-                totalPrice += el.itemPrice*el.itemQuantity;
+                if (el.itemDiscountedPrice && el.itemDiscountedPrice!='') {
+                    
+                    totalPrice += el.itemDiscountedPrice * (+el.itemQuantity);
+                }
+                else{
+
+                    totalPrice += el.itemPrice * el.itemQuantity;
+                }
             });
             return totalPrice;
         },

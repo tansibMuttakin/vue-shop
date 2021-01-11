@@ -120,7 +120,6 @@ export default {
         console.log(this.order);
     },
     mounted(){
-        console.log(this.$refs.invoice)
     }
 }
 </script>

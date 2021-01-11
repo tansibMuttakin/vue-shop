@@ -62,7 +62,7 @@
                         </div>
                         <div class="form-group">
                             <label class="d-flex" for="exampleInputEmail1">Categories</label>
-                            <select class="form-control" name="" id="" v-model="selected" @change="onSelectItem()">
+                            <select class="form-control" v-model="selected" @change="onSelectItem()">
                                 <option value="" disabled selected>select category</option>
                                 <option v-for="category in categories" :key="category.id" :value="category">{{category.data().name}}</option>
                             </select>
@@ -76,6 +76,10 @@
                         <div class="form-group">
                             <label class="d-flex" for="exampleInputPassword1">Price</label>
                             <input type="text" v-model="product.price" class="form-control" id="exampleInputPassword1" placeholder="price">
+                        </div>
+                        <div class="form-group">
+                            <label class="d-flex" for="exampleInputPassword1">Discount/Offer(%)</label>
+                            <input type="text" v-model="product.discount" class="form-control" id="exampleInputPassword1" placeholder="discount in %">
                         </div>
                         <div class="form-group">
                             <label class="d-flex" for="productTags">Tags</label>
@@ -122,11 +126,12 @@
                         </div>
                         <div class="form-group">
                             <label class="d-flex" for="exampleInputEmail1">Categories</label>
-                            <select class="form-control" name="" id="" v-model="selected" @change="onSelectItem()">
-                                <option value="" disabled selected>select category</option>
-                                <option v-for="category in categories" :key="category.id" :value="category">{{category.data().name}}</option>
+                            <select class="form-control" v-model="selected" @change="onSelectItem()">
+                                <!-- <option value="" selected disabled>select category</option> -->
+                                <option :selected="category.data().name==selected.name" v-for="category in categories" :key="category.id" :value="category">{{category.data().name}}</option>
                             </select>
                         </div>
+                    
                         <div class="form-group">
                             <label class="d-flex" for="exampleFormControlTextarea1">Description</label>
                             <textarea class="form-control" id="exampleFormControlTextarea1" v-model="product.description" rows="6" style="resize:none;"></textarea>
@@ -136,6 +141,10 @@
                         <div class="form-group">
                             <label class="d-flex" for="exampleInputPassword1">Price</label>
                             <input type="text" v-model="product.price" class="form-control" id="exampleInputPassword1" placeholder="price">
+                        </div>
+                        <div class="form-group">
+                            <label class="d-flex" for="exampleInputPassword1">Discount/Offer(%)</label>
+                            <input type="text" v-model="product.discount" class="form-control" id="exampleInputPassword1" placeholder="discount in %">
                         </div>
                         <div class="form-group">
                             <label class="d-flex" for="productTags">Tags</label>
@@ -183,6 +192,8 @@ export default {
             productName:'',
             description:'',
             price:'',
+            discount:'',
+            discountedPrice:'',
             tags:[],
             images:[],
             category:{},
@@ -207,6 +218,8 @@ export default {
             productName:'',
             description:'',
             price:'',
+            discount:'',
+            discountedPrice:'',
             tags:[],
             images:[],
             category:{},
@@ -222,6 +235,7 @@ export default {
         this.tag = '';
     },
     addProduct(){
+        this.setDiscountPrice();
         this.addTag();
         const docref = db.collection("Products");
         docref.add(this.product).then( ()=>{
@@ -232,6 +246,8 @@ export default {
             this.product.description = '';
             this.product.tags = [];
             this.product.price = '';
+            this.product.discount = '';
+            this.product.discountedPrice = '';
             this.product.images = [];
             this.activeProductId='';
             this.product.category={},
@@ -244,6 +260,15 @@ export default {
         .catch((error)=>{
             console.error("Error adding document: ", error);
         });
+    },
+    setDiscountPrice(){
+        if (this.product.discount && this.product.discount !='') {
+            
+            this.product.discountedPrice = this.product.price-(this.product.price * this.product.discount/100);
+        }
+        else{
+            this.product.discountedPrice = ''
+        }
     },
     uploadImage(e){
         console.log(e.target.files);
@@ -291,11 +316,12 @@ export default {
     },
     edit(product){
         this.product = product.data();
-        this.selected = this.product.categoryId;
+        this.selected = this.product.category;
         this.activeProductId = product.id;
-        $('#edit').modal('show')
+        $('#edit').modal('show');
     },
     update(){
+        this.setDiscountPrice();
         db.collection("Products").doc(this.activeProductId).update(this.product)
         .then(()=>{
             console.log("Product updated successfully");
@@ -308,6 +334,8 @@ export default {
             this.product.description = '';
             this.product.tags = [];
             this.product.price = '';
+            this.product.discount = '';
+            this.product.discountedPrice = '';
             this.product.images = [];
             this.product.category={};
             this.activeProductId='';
