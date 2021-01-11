@@ -48,7 +48,8 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th>Name</th>
-                                <th>Unit Cost</th>
+                                <th>Unit Price</th>
+                                <th>Discounted Price</th>
                                 <th>Quantity</th>
                                 <th>Ammount</th>
                             </tr>
@@ -57,8 +58,11 @@
                             <tr v-for="item in order.orderInfo.purchasedItems" :key="item.itemId">
                                 <td scope="row">{{item.itemName}}</td>
                                 <td>${{item.itemPrice}}</td>
+                                <td v-if="item.itemDiscountedPrice != ''">${{item.itemDiscountedPrice}}</td>
+                                <td v-else>N/A</td>
                                 <td>{{item.itemQuantity}}</td>
-                                <td>${{+item.itemPrice * item.itemQuantity}}</td>
+                                <td v-if="item.itemDiscountedPrice != ''">${{item.itemDiscountedPrice * item.itemQuantity}}</td>
+                                <td v-else>${{+item.itemPrice * item.itemQuantity}}</td>
                             </tr>
                         </tbody>
                     </table>

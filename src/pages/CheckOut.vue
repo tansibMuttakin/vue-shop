@@ -349,6 +349,9 @@ export default {
                 this.orderInfo={};
                 this.paymentInfo={};
             }
+            else {
+                $("#login-modal").modal('show');
+            }
         },
         increase(){
             this.$store.commit('setInvoice');
