@@ -19,8 +19,12 @@
                             <div class="d-flex mb-2">
                                 <h5 class="font-weight-bold">{{item.itemName}}</h5>
                             </div>
-                            <div class="d-flex">
-                                <p>${{item.itemPrice}}</p>
+                            <div v-if="item.itemDiscountedPrice != ''" class="d-flex flex-column mb-3">
+                                <p class="text-left m-0">${{item.itemDiscountedPrice}}</p>
+                                <small class="text-left m-0"><del>${{item.itemPrice}}</del></small>
+                            </div>
+                            <div v-else class="d-flex mb-3">
+                                <p class="text-left m-0">${{item.itemPrice}}</p>
                             </div>
                             <div class="d-flex justify-content-between">
                                 <div class="d-flex">
@@ -32,6 +36,8 @@
                                     :product-image="images[0]"
                                     :product-id="item.itemId"
                                     :price="item.itemPrice"
+                                    :discount="item.itemDiscount"
+                                    :discountedPrice="item.itemDiscountedPrice"
                                     :name="item.itemName"
                                     :button-large="true"
                                     :product-quantity="quantity">
@@ -89,6 +95,8 @@ export default {
     props:{
         name:String,
         price:String,
+        discount:String,
+        discountedPrice:String,
         id:String,
         images:Array,
         tags:Array,
@@ -100,6 +108,8 @@ export default {
             item:{
                 itemName:this.name,
                 itemPrice:this.price,
+                itemDiscount:this.discount,
+                itemDiscountedPrice:this.discountedPrice==undefined?'':this.discountedPrice,
                 itemId:this.id,
                 itemImages:this.images,
                 itemDescription:this.description,

@@ -74,6 +74,7 @@
                                 :images="product.data.images"
                                 :price="product.data.price"
                                 :discount="product.data.discount"
+                                :discountedPrice="product.data.discountedPrice"
                                 :name="product.data.productName"
                                 :description="product.data.description"
                                 :tags="product.data.tags"

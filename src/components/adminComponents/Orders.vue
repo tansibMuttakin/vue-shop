@@ -30,7 +30,7 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody v-if="orders.length!= 0">
                     <tr v-for="(order,index) in orders" :key="order.id">
                         <td>{{++index}}</td>
                         <td>{{order.id}}</td>
@@ -50,6 +50,9 @@
                     </tr>
                 </tbody>
             </table>
+            <div v-if="orders.length== 0" class="w-100 mt-5 text-align-center">
+                <h3>NO ORDER TO DISPLAY</h3>
+            </div>
         </div>
     </div>
 </template>

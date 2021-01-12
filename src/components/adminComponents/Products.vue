@@ -24,6 +24,7 @@
                     <th>Name</th>
                     <th>Category</th>
                     <th>Price</th>
+                    <th>Discount(%)</th>
                     <th>Modify</th>
                 </tr>
             </thead>
@@ -35,6 +36,8 @@
                     <td>{{product.data().productName}}</td>
                     <td>{{product.data().category.name}}</td>
                     <td>{{product.data().price}}</td>
+                    <td v-if="product.data().discount != ''">{{product.data().discount}}</td>
+                    <td v-else>No Discount</td>
                     <td>
                         <button class="btn btn-info btn-sm mx-1" @click="edit(product)">Edit</button>
                         <button class="btn btn-danger btn-sm" @click="destroy(product)">Delete</button>
@@ -77,9 +80,10 @@
                             <label class="d-flex" for="exampleInputPassword1">Price</label>
                             <input type="text" v-model="product.price" class="form-control" id="exampleInputPassword1" placeholder="price">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group text-left">
                             <label class="d-flex" for="exampleInputPassword1">Discount/Offer(%)</label>
                             <input type="text" v-model="product.discount" class="form-control" id="exampleInputPassword1" placeholder="discount in %">
+                            <small>* Leave this field empty if no offer to give</small>
                         </div>
                         <div class="form-group">
                             <label class="d-flex" for="productTags">Tags</label>
@@ -142,9 +146,10 @@
                             <label class="d-flex" for="exampleInputPassword1">Price</label>
                             <input type="text" v-model="product.price" class="form-control" id="exampleInputPassword1" placeholder="price">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group text-left">
                             <label class="d-flex" for="exampleInputPassword1">Discount/Offer(%)</label>
                             <input type="text" v-model="product.discount" class="form-control" id="exampleInputPassword1" placeholder="discount in %">
+                            <small>* Make this field empty if no offer to give</small>
                         </div>
                         <div class="form-group">
                             <label class="d-flex" for="productTags">Tags</label>

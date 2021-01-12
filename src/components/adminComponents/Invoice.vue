@@ -26,7 +26,7 @@
             </div>
             <div class="billing-info">
                 <h5>Billed To:</h5>
-                <p>{{order.billingInfo.firstName}}{{order.billingInfo.lastName}}</p>
+                <p>{{order.billingInfo.firstName}}&nbsp;{{order.billingInfo.lastName}}</p>
                 <p>{{order.billingInfo.address}}</p>
                 <p>{{order.billingInfo.city}}-{{order.billingInfo.zip}}</p>
                 <p><i class="pi pi-mobile" style="fontSize: 1rem"></i> 01839224536</p>
@@ -81,12 +81,12 @@
                         </div>
                         <div class="d-flex justify-content-between">
                             <p>TAX:</p>
-                            <p>{{+order.orderInfo.discountedPrice * (order.orderInfo.tax/100)}}</p>
+                            <p>{{Math.round(+order.orderInfo.discountedPrice * (order.orderInfo.tax/100))}}</p>
                         </div>
                         <div class="dash">
                         </div>
                         <p>INVOICE TOTAL</p>
-                        <h5>${{(+order.orderInfo.discountedPrice * order.orderInfo.tax/100)+(+order.orderInfo.discountedPrice)}}</h5>
+                        <h5>${{Math.round(+order.orderInfo.discountedPrice * (order.orderInfo.tax/100))+(+order.orderInfo.discountedPrice)}}</h5>
                     </div>
                 </div>
             </div>

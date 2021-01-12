@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import $ from 'jquery';
+// import $ from 'jquery';
 export default {
     props:{
         name:String,
@@ -30,8 +30,8 @@ export default {
     },
     methods:{
         addToCart(){
-            $(`#${this.item.itemId}`).modal("hide");
-            $('#cart-modal').modal("show");
+            // $(`#${this.item.itemId}`).modal("hide");
+            // $('#cart-modal').modal("show");
             this.$store.commit('addToCart',this.item);
         },
         isAlreadyAdded(){
