@@ -356,7 +356,8 @@ export default {
         increase(){
             this.$store.commit('setInvoice');
             console.log(this.$store.state.invoiceNum);
-        }
+        },
+        
         
     },
     computed:{
@@ -376,7 +377,7 @@ export default {
         },
         discountedPrice(){
             return this.totalPrice-this.totalPrice*.25
-        }
+        },
     },
     created(){
         this.paymentInfo.paymentMethod = 'cash-on-delivery';

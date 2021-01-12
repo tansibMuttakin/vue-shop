@@ -11,7 +11,7 @@
                   <p>Number of total User</p>
                 </div>
                 <div>
-                  <h4 class="border rounded p-3 bg-success text-white">83</h4>
+                  <h4 class="border rounded p-3 bg-success text-white">{{totalUser}}</h4>
                 </div>
               </div>
             </template>
@@ -52,7 +52,7 @@
       <Card>
         <template #title>
           <div class="text-left">
-            <h5>Sale vs Month</h5>
+            <h5>Sales vs Month</h5>
           </div>
         </template>
         <template #content>
@@ -148,6 +148,7 @@
 <script>
 import Card from 'primevue/card';
 import Chart from 'primevue/chart';
+import db from '../../db';
 export default{
   components:{Card,Chart},
   data(){
@@ -188,8 +189,24 @@ export default{
               }
           }]
         }
-      }
+      },
+      totalUser:'',
+      totalSales:'',
+      totalRevenue:'',
     }
+  },
+  async created(){
+    let count = 0;
+    let users = await db.collection('Accounts').get();
+    users.forEach((user)=>{
+      let roles = user.data().roles;
+      roles.forEach((role)=>{
+        if (role.name == 'customer') {
+          count++;
+        }
+      })
+    })
+    this.totalUser = count;
   }
 };
 </script>
