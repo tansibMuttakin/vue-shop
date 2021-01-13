@@ -136,6 +136,7 @@ export default {
       });
       if (deleteConfirm.isConfirmed) {
         await db.collection("Accounts").doc(user.id).delete();
+        await db.collection("Profiles").doc(user.id).delete();
         Toast.fire({
           icon: 'success',
           title: 'Deleted successfully'

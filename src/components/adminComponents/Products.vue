@@ -388,6 +388,9 @@ export default {
         this.products = this.updatedProducts;
         this.updatedProducts=[];
     });
+    db.collection("Products").orderBy("price").limit(3).get().then((querySnapshot)=>{
+        console.log(querySnapshot);
+    })
     db.collection("Categories").onSnapshot((querySnapshot)=>{
         querySnapshot.forEach((doc)=>{
             // doc.data() is never undefined for query doc snapshots

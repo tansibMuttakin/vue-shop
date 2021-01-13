@@ -17,6 +17,8 @@ import User from './components/adminComponents/Users';
 import Roles from './components/adminComponents/Roles';
 import Coupons from './components/adminComponents/Coupons';
 
+import isAdmin from './middleware/isAdmin';
+
 // register route path and respective components
 const routes = [
   {
@@ -40,7 +42,10 @@ const routes = [
   {
     path: "/admin",
     component: Admin,
-    meta: { requiresAuth: true },
+    meta: { 
+      requiresAuth: true,
+      middleware:[isAdmin],
+    },
     children: [
       { path: '', component: Dashboard},
       { path:'users',component:User},
@@ -79,12 +84,28 @@ router.beforeEach((to,from,next) => {
     if (!user && requiresAuth) {
       next('/');
     } else if(user && requiresAuth){
-      next();
+      if(!to.meta.middleware) {
+        next();
+      }
+      else{
+        const middleware = to.meta.middleware;
+        const context = {to,from,next};
+        middleware[0]({...context})
+      }
     }
     else{
       next();
     }
   });
+
+  // if(!to.meta.middleware) {
+  //   next();
+  // }
+  // else{
+  //   const middleware = to.meta.middleware;
+  //   const context = {to,from,next};
+  //   middleware[0]({...context})
+  // }
 
 });
 

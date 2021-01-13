@@ -73,28 +73,19 @@
               <thead>
                 <tr>
                   <th scope="col">#</th>
-                  <th scope="col">First</th>
-                  <th scope="col">Last</th>
-                  <th scope="col">Handle</th>
+                  <th scope="col">Order Id</th>
+                  <th scope="col">purchsed Items</th>
+                  <th scope="col">Total</th>
+                  <th scope="col">Status</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>Jacob</td>
-                  <td>Thornton</td>
-                  <td>@fat</td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td colspan="2">Larry the Bird</td>
-                  <td>@twitter</td>
+                <tr v-for="(order,index) in recentOrders" :key="order.id">
+                  <td>{{++index}}</td>
+                  <td>{{order.id}}</td>
+                  <td>{{order.data().orderInfo.purchasedItems.length}}</td>
+                  <td>${{order.data().orderInfo.totalPrice}}</td>
+                  <td>{{order.data().orderInfo.status}}</td>
                 </tr>
               </tbody>
             </table>
@@ -113,28 +104,21 @@
               <thead>
                 <tr>
                   <th scope="col">#</th>
-                  <th scope="col">First</th>
-                  <th scope="col">Last</th>
-                  <th scope="col">Handle</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Roles</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>Jacob</td>
-                  <td>Thornton</td>
-                  <td>@fat</td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td colspan="2">Larry the Bird</td>
-                  <td>@twitter</td>
+                <tr v-for="(user,index) in recentAddedUser" :key="user.id">
+                  <td>{{++index}}</td>
+                  <td>{{user.data().name}}</td>
+                  <td>{{user.data().email}}</td>
+                  <td>
+                    <ul class="p-0">
+                      <li class="list-unstyled" v-for="(role,index) in user.data().roles" :key="index">- {{role.name}}</li>
+                    </ul>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -193,6 +177,8 @@ export default{
       totalUser:'',
       totalSales:'',
       totalRevenue:'',
+      recentOrders:'',
+      recentAddedUser:'',
     }
   },
   async created(){
@@ -207,6 +193,15 @@ export default{
       })
     })
     this.totalUser = count;
+
+    const ordersRecent = await db.collection("Orders").orderBy("orderInfo.orderDate","desc").limit(5).get();
+    this.recentOrders = ordersRecent.docs;
+
+    const recentUsers = await db.collection('Accounts').orderBy('created_at','desc').limit(5).get();
+    this.recentAddedUser = recentUsers.docs;
+
+    let a = await db.collection("Accounts").doc('PcGC9iPniDe3mazhIYwKmqVlosG3').get();
+    console.log(a.data().roles);
   }
 };
 </script>

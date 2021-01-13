@@ -107,6 +107,8 @@ export default {
             await db.collection("Accounts").doc(user.user.uid).set({
                 name: this.name,
                 email: this.email,
+                created_at:new Date(),
+                roles:[{name:'customer',description:'restricted from add/edit/delete products'}]
             });
             $('#login-modal').modal('hide');
             this.name='';

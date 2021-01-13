@@ -294,9 +294,10 @@ export default {
     async mounted(){
         let user = firebase.auth().currentUser;
         this.email = user.email;
-        let docRef = db.collection("Profiles").doc(user.uid);
-        const doc = await docRef.get();
-        this.name = doc.data().name;
+        // let docRef = db.collection("Profiles").doc(user.uid);
+        // const doc = await docRef.get();
+        const profileName= await db.collection("Profiles").doc(user.uid).get();
+        this.name = profileName.data().name;
     }
 }
 </script>
