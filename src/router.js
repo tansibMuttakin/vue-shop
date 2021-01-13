@@ -97,16 +97,6 @@ router.beforeEach((to,from,next) => {
       next();
     }
   });
-
-  // if(!to.meta.middleware) {
-  //   next();
-  // }
-  // else{
-  //   const middleware = to.meta.middleware;
-  //   const context = {to,from,next};
-  //   middleware[0]({...context})
-  // }
-
 });
 
 export default router;
