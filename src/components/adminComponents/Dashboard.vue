@@ -26,7 +26,7 @@
                   <p>Number of total sales</p>
                 </div>
                 <div>
-                  <h4 class="border rounded p-3 bg-warning text-white">83</h4>
+                  <h4 class="border rounded p-3 bg-warning text-white">{{totalSales}}</h4>
                 </div>
               </div>
           </template>
@@ -194,14 +194,17 @@ export default{
     })
     this.totalUser = count;
 
+    //recent order table
     const ordersRecent = await db.collection("Orders").orderBy("orderInfo.orderDate","desc").limit(5).get();
     this.recentOrders = ordersRecent.docs;
 
+    //recent user table
     const recentUsers = await db.collection('Accounts').orderBy('created_at','desc').limit(5).get();
     this.recentAddedUser = recentUsers.docs;
 
-    let a = await db.collection("Accounts").doc('PcGC9iPniDe3mazhIYwKmqVlosG3').get();
-    console.log(a.data().roles);
+    //total sales
+    let totalSell = await db.collection('Orders').where('orderInfo.status','==','paid').get();
+    this.totalSales = totalSell.docs.length;
   }
 };
 </script>
