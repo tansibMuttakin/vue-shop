@@ -224,7 +224,7 @@ import firebase from '../firebase';
 import $ from 'jquery';
 import Toast from '../sweetAlart';
 import db from '../db';
-import moment from 'moment';
+// import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 
 export default {
@@ -321,7 +321,8 @@ export default {
                 // extracting user info - end
 
                 //setting orderInfo-start
-                this.orderInfo.orderDate = moment().format("DD-MM-YYYY");
+                // this.orderInfo.orderDate = moment().format("DD-MM-YYYY");
+                this.orderInfo.orderDate = new Date();
                 this.orderInfo.invoiceId = 'VS'+ uuidv4();
                 this.orderInfo.totalPrice = this.totalPrice;
                 this.orderInfo.discountedPrice = this.discountedPrice;

@@ -3,13 +3,14 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
             <div class="modal-header">
+                <span><i class="pi pi-shopping-cart" style="fontSize: 2rem"></i>&nbsp;&nbsp;&nbsp;</span>
                 <h5 class="modal-title" id="exampleModalCenterTitle">Shopping Bag</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div v-if="$store.state.cart.length" class="modal-body">
-                <ul>
+                <!-- <ul>
                     <li v-for="item in $store.state.cart" :key="item.itemId" class="media">
                         <img :src="item.itemImage" alt="" width="60" class="rounded-circle">
                         <div class="media-body">
@@ -20,11 +21,23 @@
                                 <i class="fa fa-minus-circle" aria-hidden="true" @click="subItemQuantity(item)"></i>
                                 <span class="trash" @click="removeItem(item)"><i class="fas fa-trash"></i></span>
                             </p >
-                            <!-- <p class="mt-0 mb-1 d-flex ml-1">{{item.itemPrice}}</p>
-                            <p class="mt-0 mb-1 d-flex ml-1">Quantity: {{item.itemQuantity}}</p> -->
                         </div>
                     </li>
-                </ul>
+                </ul> -->
+                <table class="table table-borderless">
+                    <tbody rules=none >
+                        <tr v-for="item in $store.state.cart" :key="item.itemId" class="media d-flex justify-content-around text-left">
+                            <!-- <td>
+                                <img :src="item.itemImage" alt="" width="40" class="rounded-circle">
+                            </td> -->
+                            <td class="w-50 ">{{item.itemName}}</td>
+                            <td class=""><i class="fa fa-plus-circle" aria-hidden="true" @click="addItemQuantity(item)"></i></td>
+                            <td class="" style="width:10%"><span class="mt-0 mb-1 d-flex ml-1 pointer">{{item.itemQuantity}}</span></td>
+                            <td class=""><i class="fa fa-minus-circle" aria-hidden="true" @click="subItemQuantity(item)"></i></td>
+                            <td class=""><span class="trash" @click="removeItem(item)"><i class="fas fa-trash"></i></span></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <div v-else class="modal-body">
                 <h5>Shopping bag is cleared</h5>

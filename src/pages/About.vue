@@ -32,7 +32,7 @@ import 'primeflex/primeflex.css';
 import Sidebar from '../components/Sidebar';
 
 export default {
-    components:{Navbar,Carousel,Sidebar},
+    components:{Navbar,Carousel,Sidebar },
     data(){
         return{
             showSidebar:false,
@@ -45,6 +45,15 @@ export default {
                 {name:"mitsubishi"},
                 {name:"mercedese"},
             ],
+            settings:{
+                "dots": true,
+                "dotsClass": "slick-dots custom-dot-class",
+                "edgeFriction": 0.35,
+                "infinite": false,
+                "speed": 500,
+                "slidesToShow": 1,
+                "slidesToScroll": 1
+            }
         }
     },
     methods:{

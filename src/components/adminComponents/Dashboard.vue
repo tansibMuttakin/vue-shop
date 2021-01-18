@@ -37,11 +37,11 @@
           <template #content>
               <div class="d-flex justify-content-between">
                 <div class="text-left">
-                  <h5>Revenue</h5>
-                  <p>Income in total</p>
+                  <h5>Sales last month</h5>
+                  <p>sales in amount</p>
                 </div>
                 <div>
-                  <h4 class="border rounded p-3 bg-info text-white">$983456823</h4>
+                  <h4 class="border rounded p-3 bg-info text-white">${{lastMonthSale}}</h4>
                 </div>
               </div>
           </template>
@@ -176,9 +176,15 @@ export default{
       },
       totalUser:'',
       totalSales:'',
-      totalRevenue:'',
+      lastMonthSale:'',
       recentOrders:'',
       recentAddedUser:'',
+    }
+  },
+  computed:{
+    salesLastMonth(){
+      
+      return 0
     }
   },
   async created(){
@@ -205,6 +211,23 @@ export default{
     //total sales
     let totalSell = await db.collection('Orders').where('orderInfo.status','==','paid').get();
     this.totalSales = totalSell.docs.length;
+
+    // let a = await db.collection('Orders').where('orderInfo.status','==','paid')
+    // .where('orderInfo.orderDate','==',).get();
+    // console.log(a.docs[0].data());
+    let currentDate = new Date();
+    let lastMonthSaleCount = 0;
+    let orders = await db.collection('Orders').where('orderInfo.status','==','paid').get();
+    orders.docs.forEach((order)=>{
+      let date = order.data().orderInfo.orderDate.toDate();
+      if(new Date(currentDate.getFullYear(), currentDate.getMonth()-1) <= date && date < new Date(currentDate.getFullYear(), currentDate.getMonth())) {
+        lastMonthSaleCount += order.data().orderInfo.totalPrice;
+      }
+    })
+    this.lastMonthSale = lastMonthSaleCount;
+    // let date = a.data().orderInfo.orderDate.toDate();
+
+    // console.log(new Date(currentDate.getFullYear(),currentDate.getMonth()-1,currentDate.getDate()));
   }
 };
 </script>

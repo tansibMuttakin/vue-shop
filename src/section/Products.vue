@@ -125,7 +125,7 @@ export default {
   },
   async mounted(){
     //fetches all the data for once in a reload 
-    const snapShot = await db.collection("Products").get();
+    const snapShot = await db.collection("Products").where('discount','!=','').get();
     snapShot.forEach((doc)=>{
         const id = doc.id;
         let dataInfo = {id, ...doc.data()};
