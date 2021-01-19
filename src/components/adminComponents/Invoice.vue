@@ -26,7 +26,7 @@
             </div>
             <div class="billing-info">
                 <h5>Billed To:</h5>
-                <p>{{order.billingInfo.firstName}}&nbsp;{{order.billingInfo.lastName}}</p>
+                <p>{{order.billingInfo.firstName}} &nbsp; {{order.billingInfo.lastName}}</p>
                 <p>{{order.billingInfo.address}}</p>
                 <p>{{order.billingInfo.city}}-{{order.billingInfo.zip}}</p>
                 <p><i class="pi pi-mobile" style="fontSize: 1rem"></i> 01839224536</p>
@@ -40,7 +40,7 @@
                     </div>
                     <div>
                         <h5>Date of Issue</h5>
-                        <p>{{order.orderInfo.orderDate}}</p>
+                        <p>{{$route.query.issuDate}}</p>
                     </div>
                 </div>
                 <div class="product-table">
@@ -96,6 +96,7 @@
 
 <script>
 import html2pdf from 'html2pdf.js';
+// import db from '../../db';
 
 import Tooltip from 'primevue/tooltip';
 export default {
@@ -121,10 +122,8 @@ export default {
     },
     created(){
         this.order =  JSON.parse(atob(this.$route.query.order));
-        console.log(this.order);
+        console.log(this.$route.query.issuDate);
     },
-    mounted(){
-    }
 }
 </script>
 

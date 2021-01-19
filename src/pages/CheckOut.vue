@@ -234,15 +234,19 @@ export default {
             showSidebar:false,
             message:'Login/Rgesiter to complete the order',
             order:{},
+            a:'',
             orderInfo:{
                 invoiceId:'',
                 orderDate:'',
-                status:'',
+                status:'unpaid',
                 purchasedItems:[],
                 totalPrice:'',
-                discount:'',
-                tax:'',
+                discount:25,//hard coded integer
+                tax:2, //hard coded integer
                 discountedPrice:'',
+            },
+            deliveryInfo:{
+                deliveryStatus:'pending'
             },
             billingInfo:{
                 firstName:'',
@@ -321,22 +325,30 @@ export default {
                 // extracting user info - end
 
                 //setting orderInfo-start
-                // this.orderInfo.orderDate = moment().format("DD-MM-YYYY");
+
                 this.orderInfo.orderDate = new Date();
                 this.orderInfo.invoiceId = 'VS'+ uuidv4();
                 this.orderInfo.totalPrice = this.totalPrice;
                 this.orderInfo.discountedPrice = this.discountedPrice;
-                this.orderInfo.status = 'paid'; //hard coded
-                this.orderInfo.tax = 2; //hard coded
-                this.orderInfo.discount = 25; //hard coded
+                if (this.paymentInfo.paymentMethod!='cash-on-delivery') {
+                    
+                    this.orderInfo.status = 'paid'; //hard coded
+                }
                 this.orderInfo.purchasedItems= this.$store.state.cart;
                 //setting order info - end
 
                 this.order.orderInfo = this.orderInfo;
+                this.order.deliveryInfo = this.deliveryInfo;
                 this.order.userInfo = userInfo;
                 this.order.billingInfo = this.billingInfo;
                 this.order.paymentInfo = this.paymentInfo;
+                console.log(this.order);
                 await db.collection("Orders").add(this.order);
+                // try {
+                // } catch (error) {
+                //     console.log(error);
+                // }
+                
                 this.order={};
 
                 this.invoiceNum = this.$store.state.invoiceNum;
@@ -377,10 +389,11 @@ export default {
             return totalPrice;
         },
         discountedPrice(){
-            return this.totalPrice-this.totalPrice*.25
+            
+            return this.totalPrice-this.totalPrice*.25;
         },
     },
-    created(){
+    mounted(){
         this.paymentInfo.paymentMethod = 'cash-on-delivery';
     },
     

@@ -1,129 +1,134 @@
 <template>
   <div class="container">
-    <div class="d-flex justify-content-between mt-2">
-      <div>
-        <Card style="width: 20em; margin-bottom: 2em; ">
-            
+    <div v-if="loading" class="w-100" style="height:100vh; position:relative">
+      <i class="pi pi-spin pi-spinner" style="fontSize: 4rem; position:absolute; top:50%"></i>
+    </div>
+    <div v-else>
+      <div class="d-flex justify-content-between mt-2">
+        <div>
+          <Card style="width: 20em; margin-bottom: 2em; ">
+              
+              <template #content>
+                <div class="d-flex justify-content-between">
+                  <div class="text-left">
+                    <h5>Users</h5>
+                    <p>Number of total User</p>
+                  </div>
+                  <div>
+                    <h4 class="border rounded p-3 bg-success text-white">{{totalUser}}</h4>
+                  </div>
+                </div>
+              </template>
+          </Card>
+        </div>
+        <div>
+          <Card style="width: 20em; margin-bottom: 2em">
             <template #content>
-              <div class="d-flex justify-content-between">
-                <div class="text-left">
-                  <h5>Users</h5>
-                  <p>Number of total User</p>
+                <div class="d-flex justify-content-between">
+                  <div class="text-left">
+                    <h5>Sales</h5>
+                    <p>Number of total sales</p>
+                  </div>
+                  <div>
+                    <h4 class="border rounded p-3 bg-warning text-white">{{totalSales}}</h4>
+                  </div>
                 </div>
-                <div>
-                  <h4 class="border rounded p-3 bg-success text-white">{{totalUser}}</h4>
+            </template>
+          </Card>
+        </div>
+        <div>
+          <Card style="width: 20em; margin-bottom: 2em">
+            <template #content>
+                <div class="d-flex justify-content-between">
+                  <div class="text-left">
+                    <h5>Sales last month</h5>
+                    <p>sales in amount</p>
+                  </div>
+                  <div>
+                    <h4 class="border rounded p-3 bg-info text-white">${{lastMonthSale}}</h4>
+                  </div>
                 </div>
+            </template>
+          </Card>
+        </div>
+      </div>
+      <div class="mb-4">
+        <Card>
+          <template #title>
+            <div class="text-left">
+              <h5>Sales vs Month</h5>
+            </div>
+          </template>
+          <template #content>
+            <Chart type="bar" :data="basicData" :options="options"/>
+          </template>
+        </Card>
+      </div>
+      <div class="row mb-2">
+        <div class="col-md-6">
+          <Card>
+            <template #title>
+              <div class="text-left p-2 bg-dark text-white">
+                <h5>Recent Orders</h5>
               </div>
             </template>
-        </Card>
-      </div>
-      <div>
-        <Card style="width: 20em; margin-bottom: 2em">
-          <template #content>
-              <div class="d-flex justify-content-between">
-                <div class="text-left">
-                  <h5>Sales</h5>
-                  <p>Number of total sales</p>
-                </div>
-                <div>
-                  <h4 class="border rounded p-3 bg-warning text-white">{{totalSales}}</h4>
-                </div>
+            <template #content>
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Order Id</th>
+                    <th scope="col">purchsed Items</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(order,index) in recentOrders" :key="order.id">
+                    <td>{{++index}}</td>
+                    <td>{{order.id}}</td>
+                    <td>{{order.data().orderInfo.purchasedItems.length}}</td>
+                    <td>${{order.data().orderInfo.totalPrice}}</td>
+                    <td>{{order.data().orderInfo.status}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </template>
+          </Card>
+        </div>
+        <div class="col-md-6">
+          <Card>
+            <template #title>
+              <div class="text-left p-2 bg-dark text-white">
+                <h5>Recent Added Users</h5>
               </div>
-          </template>
-        </Card>
-      </div>
-      <div>
-        <Card style="width: 20em; margin-bottom: 2em">
-          <template #content>
-              <div class="d-flex justify-content-between">
-                <div class="text-left">
-                  <h5>Sales last month</h5>
-                  <p>sales in amount</p>
-                </div>
-                <div>
-                  <h4 class="border rounded p-3 bg-info text-white">${{lastMonthSale}}</h4>
-                </div>
-              </div>
-          </template>
-        </Card>
-      </div>
-    </div>
-    <div class="mb-4">
-      <Card>
-        <template #title>
-          <div class="text-left">
-            <h5>Sales vs Month</h5>
-          </div>
-        </template>
-        <template #content>
-          <Chart type="bar" :data="basicData" :options="options"/>
-        </template>
-      </Card>
-    </div>
-    <div class="row mb-2">
-      <div class="col-md-6">
-        <Card>
-          <template #title>
-            <div class="text-left p-2 bg-dark text-white">
-              <h5>Recent Orders</h5>
-            </div>
-          </template>
-          <template #content>
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Order Id</th>
-                  <th scope="col">purchsed Items</th>
-                  <th scope="col">Total</th>
-                  <th scope="col">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(order,index) in recentOrders" :key="order.id">
-                  <td>{{++index}}</td>
-                  <td>{{order.id}}</td>
-                  <td>{{order.data().orderInfo.purchasedItems.length}}</td>
-                  <td>${{order.data().orderInfo.totalPrice}}</td>
-                  <td>{{order.data().orderInfo.status}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </template>
-        </Card>
-      </div>
-      <div class="col-md-6">
-        <Card>
-          <template #title>
-            <div class="text-left p-2 bg-dark text-white">
-              <h5>Recent Added Users</h5>
-            </div>
-          </template>
-          <template #content>
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Email</th>
-                  <th scope="col">Roles</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(user,index) in recentAddedUser" :key="user.id">
-                  <td>{{++index}}</td>
-                  <td>{{user.data().name}}</td>
-                  <td>{{user.data().email}}</td>
-                  <td>
-                    <ul class="p-0">
-                      <li class="list-unstyled" v-for="(role,index) in user.data().roles" :key="index">- {{role.name}}</li>
-                    </ul>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </template>
-        </Card>
+            </template>
+            <template #content>
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Roles</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(user,index) in recentAddedUser" :key="user.id">
+                    <td>{{++index}}</td>
+                    <td>{{user.data().name}}</td>
+                    <td>{{user.data().email}}</td>
+                    <td>
+                      <ul class="p-0">
+                        <li class="list-unstyled" v-for="(role,index) in user.data().roles" :key="index">- {{role.name}}</li>
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </template>
+          </Card>
+        </div>
       </div>
     </div>
   </div>
@@ -137,6 +142,7 @@ export default{
   components:{Card,Chart},
   data(){
     return{
+      loading:false,
       basicData: {
 				labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July','Augast', 'September', 'October','November', 'December'],
 				datasets: [
@@ -188,6 +194,8 @@ export default{
     }
   },
   async created(){
+    this.loading = true;
+
     let count = 0;
     let users = await db.collection('Accounts').get();
     users.forEach((user)=>{
@@ -228,6 +236,8 @@ export default{
     // let date = a.data().orderInfo.orderDate.toDate();
 
     // console.log(new Date(currentDate.getFullYear(),currentDate.getMonth()-1,currentDate.getDate()));
+
+    this.loading = false;
   }
 };
 </script>

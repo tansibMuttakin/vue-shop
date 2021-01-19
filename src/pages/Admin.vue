@@ -90,13 +90,6 @@
                                     <span>Coupons</span>
                                 </router-link>
                             </li>
-
-                            <li>
-                                <router-link to="/admin/profile">
-                                    <i class="fa fa-user"></i>
-                                    <span>Profile</span>
-                                </router-link>
-                            </li>
                             <li>
                                 <a href="#" @click="logout()">
                                     <i class="fa fa-power-off"></i>
@@ -233,9 +226,8 @@
                             <span class="badge-sonar"></span>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuMessage">
-                            <a class="dropdown-item" href="#">My profile</a>
+                            <router-link class="dropdown-item" to="/admin/profile">Profile & Settings</router-link>
                             <a class="dropdown-item" href="#">Help</a>
-                            <a class="dropdown-item" href="#">Setting</a>
                         </div>
                     </div>
                     <div>

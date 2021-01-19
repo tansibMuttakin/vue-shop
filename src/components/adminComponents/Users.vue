@@ -2,7 +2,9 @@
   <div class="row">
     <div class="form-group col-md-12">
         <h2>Vue-Shop Admin</h2>
-        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatem repellendus repudiandae corporis fugit perferendis fuga ab ut minus quibusdam, quaerat nesciunt, amet unde alias perspiciatis ullam eius aperiam expedita numquam.</p>
+        <p>Firebase function is not enable (which is not free). So deleting user from dashboard will only remove the account from firestore.
+          But it will remain as it is in the firebase authentication. So user will be able to login despite being removed by the admin.
+        </p>
     </div>
   </div>
   <div class="row">
@@ -165,6 +167,7 @@ export default {
         this.roles=this.updatedRoles;
         this.updatedRoles=[];
     })
+    
     
     
   }

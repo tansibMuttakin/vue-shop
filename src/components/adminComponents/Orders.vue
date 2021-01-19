@@ -24,25 +24,41 @@
                         <th>Order Id</th>
                         <th>Invoice-Id</th>
                         <th>purchased</th>
-                        <th>Date</th>
+                        <th>Date(DD-MM-YYYY)</th>
                         <th>Total</th>
-                        <th>Status</th>
+                        <th>Payment</th>
+                        <th>Delivery</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody v-if="orders.length!= 0">
                     <tr v-for="(order,index) in orders" :key="order.id">
                         <td>{{++index}}</td>
-                        <td>{{order.id}}</td>
+                        <td>
+                            {{order.id}}
+                            <br>
+                            <small>Order By - {{order.userInfo.name}}</small>
+                        </td>
                         <td style="width:15%">{{order.orderInfo.invoiceId}}</td>
                         <td>{{order.orderInfo.purchasedItems.length}} - items</td>
-                        <td>{{order.orderInfo.orderDate}}</td>
-                        <td>${{order.orderInfo.totalPrice}}</td>
                         <td>
-                            <p class="badge badge-success">{{order.orderInfo.status}}</p>
+                            {{order.orderInfo.orderDate.toDate().getDate()}}
+                            -{{order.orderInfo.orderDate.toDate().getMonth()+1}}
+                            -{{order.orderInfo.orderDate.toDate().getFullYear()}}
                         </td>
-                        <td class="d-flex" style="justify-content:space-evenly">
-                            <!-- <i class="pi pi-download" v-tooltip.top="'download invoice'"></i> -->
+                        <td>${{order.orderInfo.discountedPrice}}</td>
+                        <td>
+                            <p v-if="order.orderInfo.status=='paid'" class="badge badge-success m-0">{{order.orderInfo.status}}</p>
+                            <p v-else class="badge badge-warning m-0">{{order.orderInfo.status}}</p>
+                            <br>
+                            <small>Paid By: {{order.paymentInfo.paymentMethod}}</small>
+                        </td>
+                        <td>
+                            <p v-if="order.deliveryInfo.deliveryStatus=='pending'" class="badge badge-warning">{{order.deliveryInfo.deliveryStatus}}</p>
+                            <p v-if="order.deliveryInfo.deliveryStatus=='delivered'" class="badge badge-success">{{order.deliveryInfo.deliveryStatus}}</p>
+                            <p v-if="order.deliveryInfo.deliveryStatus=='cancelled'" class="badge badge-danger">{{order.deliveryInfo.deliveryStatus}}</p>
+                        </td>
+                        <td class="d-flex" style="justify-content:space-evenly; width:10em">
                             <i class="pi pi-eye" @click="viewInvoice(order)" v-tooltip.top="'view invoice'"></i>
                             <i class="pi pi-info-circle" v-tooltip.top="'edit order'"></i>
                             <i class="pi pi-trash" @click="deleteOrder(order)" v-tooltip.left="'delete order'"></i>
@@ -75,20 +91,27 @@ export default {
     },
     methods:{
         viewInvoice(order){
+            let orderIssueDate = order.orderInfo.orderDate.toDate().getDate()
+            +'-'+(order.orderInfo.orderDate.toDate().getMonth()+1)
+            +'-'+order.orderInfo.orderDate.toDate().getFullYear();              
             this.$router.push({
                 name:'invoice',
-                params:{orderId:order.id,},
-                query:{order:btoa(JSON.stringify(order))}
+                params:{orderId:order.id},
+                query:{
+                    issuDate:orderIssueDate,
+                    order:btoa(JSON.stringify(order)),
+                }
             });
         },
         async deleteOrder(order){
             await db.collection("Orders").doc(order.id).delete();
+            await db.collection("Deliveries").doc(order.id).delete();
             Toast.fire({
                 icon: 'success',
                 title: 'Order removed successfully'
             })
 
-        }
+        },
     },
     mounted(){
         this.isLoading = true;
@@ -97,12 +120,11 @@ export default {
                 let id = doc.id;
                 const orderInfo = {id,...doc.data()};
                 this.updatedOrders.push(orderInfo);
-            })
+            });
             this.orders = this.updatedOrders;
             this.updatedOrders=[];
             this.isLoading=false;
         });
-        console.log(this.$refs.invoice)
         
         // const orders = await db.collection("Orders").get();
         // orders.forEach((doc)=>{
