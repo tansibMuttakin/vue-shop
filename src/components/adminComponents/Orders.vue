@@ -60,9 +60,10 @@
                         </td>
                         <td class="d-flex" style="justify-content:space-evenly; width:10em">
                             <i class="pi pi-eye" @click="viewInvoice(order)" v-tooltip.top="'view invoice'"></i>
-                            <i class="pi pi-info-circle" v-tooltip.top="'edit order'"></i>
+                            <i class="pi pi-info-circle" @click="editOrder(order)" v-tooltip.top="'edit order'"></i>
                             <i class="pi pi-trash" @click="deleteOrder(order)" v-tooltip.left="'delete order'"></i>
                         </td>
+                        <TempModal :id="order.id"></TempModal>
                     </tr>
                 </tbody>
             </table>
@@ -77,11 +78,14 @@
 import db from '../../db';
 import Tooltip from 'primevue/tooltip';
 import Toast from '../../sweetAlart';
+import $ from 'jquery';
+import TempModal from '../TempModal';
 
 export default {
     directives: {
         'tooltip': Tooltip
     },
+    components:{TempModal},
     data(){
         return{
             orders:[],
@@ -110,7 +114,9 @@ export default {
                 icon: 'success',
                 title: 'Order removed successfully'
             })
-
+        },
+        editOrder(){
+            $('#exampleModalCenter').modal('show')
         },
     },
     mounted(){
@@ -125,19 +131,7 @@ export default {
             this.updatedOrders=[];
             this.isLoading=false;
         });
-        
-        // const orders = await db.collection("Orders").get();
-        // orders.forEach((doc)=>{
-        //     let id = doc.id;
-        //     const orderInfo = {id,...doc.data()};
-        //     this.updatedOrders.push(orderInfo);
-        //     console.log(doc.data());
-        // })
-        // this.orders = this.updatedOrders;
-        // this.updatedOrders=[];
-        // this.isLoading=false;
     }
-
 }
 </script>
 
