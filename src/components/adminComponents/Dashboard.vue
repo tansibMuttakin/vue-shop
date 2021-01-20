@@ -4,21 +4,20 @@
       <i class="pi pi-spin pi-spinner" style="fontSize: 4rem; position:absolute; top:50%"></i>
     </div>
     <div v-else>
-      <div class="d-flex justify-content-between mt-2">
+      <div class="d-flex justify-content-between flex-wrap mt-2">
         <div>
           <Card style="width: 20em; margin-bottom: 2em; ">
-              
-              <template #content>
-                <div class="d-flex justify-content-between">
-                  <div class="text-left">
-                    <h5>Users</h5>
-                    <p>Number of total User</p>
-                  </div>
-                  <div>
-                    <h4 class="border rounded p-3 bg-success text-white">{{totalUser}}</h4>
-                  </div>
+            <template #content>
+              <div class="d-flex justify-content-between">
+                <div class="text-left">
+                  <h5>Users</h5>
+                  <p>Number of total User</p>
                 </div>
-              </template>
+                <div>
+                  <h4 class="border rounded p-3 bg-success text-white">{{totalUser}}</h4>
+                </div>
+              </div>
+            </template>
           </Card>
         </div>
         <div>
@@ -45,7 +44,22 @@
                     <p>sales in amount</p>
                   </div>
                   <div>
-                    <h4 class="border rounded p-3 bg-info text-white">${{lastMonthSale}}</h4>
+                    <h4 class="border rounded p-3 bg-primary text-white">${{lastMonthSale}}</h4>
+                  </div>
+                </div>
+            </template>
+          </Card>
+        </div>
+        <div>
+          <Card style="width: 20em; margin-bottom: 2em">
+            <template #content>
+                <div class="d-flex justify-content-between">
+                  <div class="text-left">
+                    <h5>Sales current month</h5>
+                    <p>sales in amount</p>
+                  </div>
+                  <div>
+                    <h4 class="border rounded p-3 bg-info text-white">${{currentMonthSale}}</h4>
                   </div>
                 </div>
             </template>
@@ -183,6 +197,7 @@ export default{
       totalUser:'',
       totalSales:'',
       lastMonthSale:'',
+      currentMonthSale:'',
       recentOrders:'',
       recentAddedUser:'',
     }
@@ -225,14 +240,19 @@ export default{
     // console.log(a.docs[0].data());
     let currentDate = new Date();
     let lastMonthSaleCount = 0;
+    let currentMonthSaleCount = 0;
     let orders = await db.collection('Orders').where('orderInfo.status','==','paid').get();
     orders.docs.forEach((order)=>{
       let date = order.data().orderInfo.orderDate.toDate();
       if(new Date(currentDate.getFullYear(), currentDate.getMonth()-1) <= date && date < new Date(currentDate.getFullYear(), currentDate.getMonth())) {
         lastMonthSaleCount += order.data().orderInfo.totalPrice;
       }
+      if(new Date(currentDate.getFullYear(), currentDate.getMonth()) <= date && date < new Date(currentDate.getFullYear(), currentDate.getMonth()+1)) {
+        currentMonthSaleCount += order.data().orderInfo.totalPrice;
+      }
     })
     this.lastMonthSale = lastMonthSaleCount;
+    this.currentMonthSale = currentMonthSaleCount;
     // let date = a.data().orderInfo.orderDate.toDate();
 
     // console.log(new Date(currentDate.getFullYear(),currentDate.getMonth()-1,currentDate.getDate()));

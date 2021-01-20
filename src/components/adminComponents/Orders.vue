@@ -46,7 +46,7 @@
                             -{{order.orderInfo.orderDate.toDate().getMonth()+1}}
                             -{{order.orderInfo.orderDate.toDate().getFullYear()}}
                         </td>
-                        <td>${{order.orderInfo.discountedPrice}}</td>
+                        <td>${{order.orderInfo.discountedPrice + order.orderInfo.discountedPrice*(2/100)}}</td>
                         <td>
                             <p v-if="order.orderInfo.status=='paid'" class="badge badge-success m-0">{{order.orderInfo.status}}</p>
                             <p v-else class="badge badge-warning m-0">{{order.orderInfo.status}}</p>
@@ -57,11 +57,13 @@
                             <p v-if="order.deliveryInfo.deliveryStatus=='pending'" class="badge badge-warning">{{order.deliveryInfo.deliveryStatus}}</p>
                             <p v-if="order.deliveryInfo.deliveryStatus=='delivered'" class="badge badge-success">{{order.deliveryInfo.deliveryStatus}}</p>
                             <p v-if="order.deliveryInfo.deliveryStatus=='cancelled'" class="badge badge-danger">{{order.deliveryInfo.deliveryStatus}}</p>
+                            <p v-if="order.deliveryInfo.deliveryStatus=='processing'" class="badge badge-info">{{order.deliveryInfo.deliveryStatus}}</p>
+                            <p v-if="order.deliveryInfo.deliveryStatus=='returned'" class="badge badge-dark">{{order.deliveryInfo.deliveryStatus}}</p>
                         </td>
                         <td class="d-flex" style="justify-content:space-evenly; width:10em">
                             <i class="pi pi-eye" @click="viewInvoice(order)" v-tooltip.top="'view invoice'"></i>
-                            <i class="pi pi-info-circle" @click="editOrder(order)" v-tooltip.top="'edit order'"></i>
-                            <i class="pi pi-trash" @click="deleteOrder(order)" v-tooltip.left="'delete order'"></i>
+                            <i class="pi pi-info-circle" @click="editOrder(order)" v-tooltip.top="'edit order status'"></i>
+                            <i class="pi pi-trash" @click="deleteOrder(order)" v-tooltip.top="'delete order'"></i>
                         </td>
                         <TempModal :id="order.id"></TempModal>
                     </tr>
@@ -115,8 +117,8 @@ export default {
                 title: 'Order removed successfully'
             })
         },
-        editOrder(){
-            $('#exampleModalCenter').modal('show')
+        editOrder(order){
+            $(`#${order.id}`).modal('show');
         },
     },
     mounted(){
