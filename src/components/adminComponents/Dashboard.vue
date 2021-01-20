@@ -41,7 +41,7 @@
                 <div class="d-flex justify-content-between">
                   <div class="text-left">
                     <h5>Sales last month</h5>
-                    <p>sales in amount</p>
+                    <p>sales in amount(tax exc)</p>
                   </div>
                   <div>
                     <h4 class="border rounded p-3 bg-primary text-white">${{lastMonthSale}}</h4>
@@ -56,7 +56,7 @@
                 <div class="d-flex justify-content-between">
                   <div class="text-left">
                     <h5>Sales current month</h5>
-                    <p>sales in amount</p>
+                    <p>sales in amount(tax exc)</p>
                   </div>
                   <div>
                     <h4 class="border rounded p-3 bg-info text-white">${{currentMonthSale}}</h4>
@@ -245,10 +245,10 @@ export default{
     orders.docs.forEach((order)=>{
       let date = order.data().orderInfo.orderDate.toDate();
       if(new Date(currentDate.getFullYear(), currentDate.getMonth()-1) <= date && date < new Date(currentDate.getFullYear(), currentDate.getMonth())) {
-        lastMonthSaleCount += order.data().orderInfo.totalPrice;
+        lastMonthSaleCount += order.data().orderInfo.discountedPrice;
       }
       if(new Date(currentDate.getFullYear(), currentDate.getMonth()) <= date && date < new Date(currentDate.getFullYear(), currentDate.getMonth()+1)) {
-        currentMonthSaleCount += order.data().orderInfo.totalPrice;
+        currentMonthSaleCount += order.data().orderInfo.discountedPrice;
       }
     })
     this.lastMonthSale = lastMonthSaleCount;
