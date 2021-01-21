@@ -73,20 +73,24 @@
                         </div>
                         <div class="d-flex justify-content-between">
                             <p>DISCOUNT:</p>
-                            <p>{{order.orderInfo.discount}}%</p>
+                            <p>- {{coupon.discount}}%</p>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <p>TOTAL:</p>
+                            <p>${{order.orderInfo.discountedPrice}}</p>
                         </div>
                         <div class="d-flex justify-content-between">
                             <p>(TAX RATE):</p>
-                            <p>{{order.orderInfo.tax}}%</p>
+                            <p>+ {{vat.vatPercentage}}%</p>
                         </div>
                         <div class="d-flex justify-content-between">
                             <p>TAX:</p>
-                            <p>{{Math.round(+order.orderInfo.discountedPrice * (order.orderInfo.tax/100))}}</p>
+                            <p>${{Math.round(+order.orderInfo.discountedPrice * (vat.vatPercentage/100))}}</p>
                         </div>
                         <div class="dash">
                         </div>
                         <p>INVOICE TOTAL</p>
-                        <h5>${{Math.round(+order.orderInfo.discountedPrice * (order.orderInfo.tax/100))+(+order.orderInfo.discountedPrice)}}</h5>
+                        <h5>${{Math.round(+order.orderInfo.discountedPrice * (vat.vatPercentage/100))+(+order.orderInfo.discountedPrice)}}</h5>
                     </div>
                 </div>
             </div>
@@ -96,7 +100,7 @@
 
 <script>
 import html2pdf from 'html2pdf.js';
-// import db from '../../db';
+import db from '../../db';
 
 import Tooltip from 'primevue/tooltip';
 export default {
@@ -106,6 +110,8 @@ export default {
     data(){
         return{
             order:{},
+            coupon:{},
+            vat:{}
         }
     },
     methods:{
@@ -120,9 +126,13 @@ export default {
             html2pdf().set(opt).from(this.$refs.invoice).save('invoice');
         }
     },
-    created(){
+    async created(){
         this.order =  JSON.parse(atob(this.$route.query.order));
-        console.log(this.$route.query.issuDate);
+        
+        let couponDoc = await db.collection("Coupons").doc('coupon').get();
+        let vatDoc = await db.collection("Coupons").doc('vat').get();
+        this.coupon = couponDoc.data();
+        this.vat  = vatDoc.data();
     },
 }
 </script>

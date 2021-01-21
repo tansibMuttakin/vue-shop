@@ -29,7 +29,7 @@
                                 <strong v-else>${{totalPrice}}</strong>
                             </li>
                         </ul>
-                        <small class="d-flex mb-2">use&nbsp;<b>BIJOY25</b>&nbsp;to get 25% off on total price.</small>
+                        <small class="d-flex mb-2">use&nbsp;<b>{{coupon.code}}</b>&nbsp;to get {{coupon.discount}}% off on total price.</small>
 
                         <form class="card p-2">
                             <div class="input-group">
@@ -127,13 +127,6 @@
                             <h4 class="d-flex mb-3">Payment</h4>
 
                             <div class="d-block my-3">
-                                <!-- <input type="radio" id="one" value="One" v-model="picked">
-                                <label for="one">One</label>
-                                <br>
-                                <input type="radio" id="two" value="Two" v-model="picked" checked>
-                                <label for="two">Two</label>
-                                <br>
-                                <span>Picked: {{ picked }}</span> -->
                                 <div class="d-flex custom-control custom-radio">
                                     <input id="cod" value="cash-on-delivery" v-model="paymentInfo.paymentMethod" type="radio" class="custom-control-input" required>
                                     <label class="custom-control-label" for="cod">Cash On Delivery</label>
@@ -224,7 +217,6 @@ import firebase from '../firebase';
 import $ from 'jquery';
 import Toast from '../sweetAlart';
 import db from '../db';
-// import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 
 export default {
@@ -234,15 +226,14 @@ export default {
             showSidebar:false,
             message:'Login/Rgesiter to complete the order',
             order:{},
-            a:'',
+            coupon:{},
+            vat:{},
             orderInfo:{
                 invoiceId:'',
                 orderDate:'',
                 status:'unpaid',
                 purchasedItems:[],
                 totalPrice:'',
-                discount:25,//hard coded integer
-                tax:2, //hard coded integer
                 discountedPrice:'',
             },
             deliveryInfo:{
@@ -297,7 +288,7 @@ export default {
             })
         },
         applyDiscount(){
-            if (this.promo=='BIJOY25') {
+            if (this.promo==this.coupon.code) {
                 this.discountApplied = true;
                 this.$refs['sucess-message'].style.display="block";
                 this.$refs['error-message'].style.display="none";
@@ -390,11 +381,15 @@ export default {
         },
         discountedPrice(){
             
-            return this.totalPrice-this.totalPrice*.25;
+            return this.totalPrice-this.totalPrice*(this.coupon.discount/100);
         },
     },
-    mounted(){
+    async mounted(){
         this.paymentInfo.paymentMethod = 'cash-on-delivery';
+        let couponDoc = await db.collection("Coupons").doc('coupon').get();
+        let vatDoc = await db.collection("Coupons").doc('vat').get();
+        this.coupon = couponDoc.data();
+        this.vat  = vatDoc.data();
     },
     
 }
@@ -406,7 +401,6 @@ export default {
         transition: .3s ease;
     }
     .cml-0{
-        // margin-left: 0;
         transition: .3s ease;
     }
 </style>

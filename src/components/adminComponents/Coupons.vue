@@ -42,6 +42,7 @@
 
 <script>
 import db from '../../db';
+import Toast from '../../sweetAlart';
 export default {
   data(){
     return{
@@ -57,15 +58,36 @@ export default {
   methods:{
     async setDiscount(){
       this.coupon.code = this.coupon.code.replace(/\s+/g, '').toUpperCase();
-      this.coupon.discount = +this.coupon.discount.replace(/\s+/g, '');
-      if(this.coupon.code !='' && !isNaN(this.coupon.discount)){        
-        await db.collection("Coupons").doc('coupon').set(this.coupon)
+      console.log(typeof(this.coupon.discount));
+      switch (typeof(this.coupon.discount)) {
+        case 'number':
+          await db.collection("Coupons").doc('coupon').set(this.coupon);
+          Toast.fire({
+            icon: 'success',
+            title: 'saved!!!'
+          })
+          break;
+        case 'string':
+          this.coupon.discount = +this.coupon.discount.replace(/\s+/g, '');
+          if(this.coupon.code !='' && !isNaN(this.coupon.discount)){        
+            await db.collection("Coupons").doc('coupon').set(this.coupon);
+            Toast.fire({
+              icon: 'success',
+              title: 'saved!!!'
+            })
+          }
+          break;
       }
+
     },
     async setTax(){
       this.vat.vatPercentage = +this.vat.vatPercentage.replace(/\s+/g, '');
       if(this.vat.vatPercentage !='' && !isNaN(this.vat.vatPercentage)){        
         await db.collection("Coupons").doc("vat").set(this.vat);
+        Toast.fire({
+          icon: 'success',
+          title: 'saved!!!'
+        })
       }
     },
   },
