@@ -16,6 +16,9 @@
                 <li class="nav-item">
                     <router-link class="nav-link" to="/checkout">Checkout</router-link>
                 </li>
+                <li v-if="isUserLoggedIn" class="nav-item">
+                    <router-link class="nav-link" to="/track-order">Track Order</router-link>
+                </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">

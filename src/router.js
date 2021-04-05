@@ -16,6 +16,7 @@ import Categories from './pages/Categories';
 import User from './components/adminComponents/Users';
 import Roles from './components/adminComponents/Roles';
 import Coupons from './components/adminComponents/Coupons';
+import TrackOrder from './pages/TrackOrder';
 
 import isAdmin from './middleware/isAdmin';
 
@@ -38,6 +39,10 @@ const routes = [
   {
     path: "/about",
     component: About,
+  },
+  {
+    path: "/track-order",
+    component: TrackOrder,
   },
   {
     path: "/admin",

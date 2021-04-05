@@ -245,7 +245,6 @@ export default {
         const docref = db.collection("Products");
         docref.add(this.product).then( ()=>{
             this.products.push(this.product)
-            console.log("Product created successfully");
             $('#add').modal('hide');
             this.product.productName = '';
             this.product.description = '';
@@ -351,6 +350,7 @@ export default {
         });
     },
     destroy(product){
+        console.log(product);
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -388,9 +388,7 @@ export default {
         this.products = this.updatedProducts;
         this.updatedProducts=[];
     });
-    db.collection("Products").orderBy("price").limit(3).get().then((querySnapshot)=>{
-        console.log(querySnapshot);
-    })
+
     db.collection("Categories").onSnapshot((querySnapshot)=>{
         querySnapshot.forEach((doc)=>{
             // doc.data() is never undefined for query doc snapshots
